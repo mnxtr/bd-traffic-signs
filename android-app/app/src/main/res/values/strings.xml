@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BD Traffic Signs</string>
+    <string name="speak_button">বাংলায় শুনুন</string>
+    <string name="detect_button">স্ক্যান করুন</string>
+    <string name="live_button">🔴 লাইভ</string>
+    <string name="capture_button">ছবি তুলুন</string>
+    <string name="gallery_button">গ্যালারি</string>
+    <string name="traffic_sign_title">বাংলাদেশ ট্রাফিক সাইন</string>
+    <string name="camera_preview">ক্যামেরা প্রিভিউ</string>
+    <string name="detected_sign">শনাক্তকৃত চিহ্ন</string>
+    <string name="statistics">পরিসংখ্যান</string>
+    <string name="total_scans">মোট স্ক্যান</string>
+    <string name="detected_signs">শনাক্তকৃত</string>
+    <string name="accuracy">নির্ভুলতা</string>
+    <string name="tips">টিপস: ভালো আলোতে এবং স্পষ্ট ছবি তুলুন সঠিক ফলাফলের জন্য</string>
+    <string name="live_detection">🔴 লাইভ ডিটেকশন</string>
+    <string name="live_instruction">ট্রাফিক চিহ্নের দিকে ক্যামেরা নির্দেশ করুন</string>
+</resources>

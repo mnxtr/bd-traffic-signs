@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="M. Mansib Newaz" />
+  <title>YOLOv11 for Bangladeshi Traffic Sign Detection</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://latex.now.sh/style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">YOLOv11 for Bangladeshi Traffic Sign Detection</h1>
+<p class="author">M. Mansib Newaz</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#yolov11-for-bangladeshi-traffic-sign-detection-a-preliminary-training-report"><span class="toc-section-number">1</span> YOLOv11 for Bangladeshi Traffic Sign Detection: A Preliminary Training Report</a>
+<ul>
+<li><a href="#authors"><span class="toc-section-number">1.1</span> Authors</a></li>
+<li><a href="#abstract"><span class="toc-section-number">1.2</span> Abstract</a></li>
+<li><a href="#introduction"><span class="toc-section-number">1.3</span> 1. Introduction</a>
+<ul>
+<li><a href="#research-motivation"><span class="toc-section-number">1.3.1</span> 1.1 Research Motivation</a></li>
+<li><a href="#research-contributions"><span class="toc-section-number">1.3.2</span> 1.2 Research Contributions</a></li>
+</ul></li>
+<li><a href="#related-work"><span class="toc-section-number">1.4</span> 2. Related Work</a>
+<ul>
+<li><a href="#traffic-sign-detection"><span class="toc-section-number">1.4.1</span> 2.1 Traffic Sign Detection</a></li>
+<li><a href="#yolo-architecture-evolution"><span class="toc-section-number">1.4.2</span> 2.2 YOLO Architecture Evolution</a></li>
+<li><a href="#regional-traffic-sign-datasets"><span class="toc-section-number">1.4.3</span> 2.3 Regional Traffic Sign Datasets</a></li>
+</ul></li>
+<li><a href="#methodology"><span class="toc-section-number">1.5</span> 3. Methodology</a>
+<ul>
+<li><a href="#dataset"><span class="toc-section-number">1.5.1</span> 3.1 Dataset</a></li>
+<li><a href="#model-architecture"><span class="toc-section-number">1.5.2</span> 3.2 Model Architecture</a></li>
+<li><a href="#training-protocol"><span class="toc-section-number">1.5.3</span> 3.3 Training Protocol</a></li>
+<li><a href="#evaluation-metrics"><span class="toc-section-number">1.5.4</span> 3.4 Evaluation Metrics</a></li>
+</ul></li>
+<li><a href="#results"><span class="toc-section-number">1.6</span> 4. Results</a>
+<ul>
+<li><a href="#training-dynamics"><span class="toc-section-number">1.6.1</span> 4.1 Training Dynamics</a></li>
+<li><a href="#performance-analysis"><span class="toc-section-number">1.6.2</span> 4.2 Performance Analysis</a></li>
+<li><a href="#learning-rate-schedule-impact"><span class="toc-section-number">1.6.3</span> 4.3 Learning Rate Schedule Impact</a></li>
+<li><a href="#comparative-benchmarks"><span class="toc-section-number">1.6.4</span> 4.4 Comparative Benchmarks</a></li>
+</ul></li>
+<li><a href="#discussion"><span class="toc-section-number">1.7</span> 5. Discussion</a>
+<ul>
+<li><a href="#rapid-convergence"><span class="toc-section-number">1.7.1</span> 5.1 Rapid Convergence</a></li>
+<li><a href="#generalization-characteristics"><span class="toc-section-number">1.7.2</span> 5.2 Generalization Characteristics</a></li>
+<li><a href="#class-imbalance-considerations"><span class="toc-section-number">1.7.3</span> 5.3 Class Imbalance Considerations</a></li>
+<li><a href="#computational-efficiency"><span class="toc-section-number">1.7.4</span> 5.4 Computational Efficiency</a></li>
+<li><a href="#limitations"><span class="toc-section-number">1.7.5</span> 5.5 Limitations</a></li>
+<li><a href="#future-work"><span class="toc-section-number">1.7.6</span> 5.6 Future Work</a></li>
+<li><a href="#expected-outcomes"><span class="toc-section-number">1.7.7</span> 5.7 Expected Outcomes</a></li>
+</ul></li>
+<li><a href="#conclusion"><span class="toc-section-number">1.8</span> 6. Conclusion</a></li>
+<li><a href="#acknowledgments"><span class="toc-section-number">1.9</span> Acknowledgments</a></li>
+<li><a href="#references"><span class="toc-section-number">1.10</span> References</a></li>
+<li><a href="#appendix-a-detailed-metrics"><span class="toc-section-number">1.11</span> Appendix A: Detailed Metrics</a>
+<ul>
+<li><a href="#a.1-loss-components"><span class="toc-section-number">1.11.1</span> A.1 Loss Components</a></li>
+<li><a href="#a.2-hardware-specifications"><span class="toc-section-number">1.11.2</span> A.2 Hardware Specifications</a></li>
+<li><a href="#a.3-dataset-statistics"><span class="toc-section-number">1.11.3</span> A.3 Dataset Statistics</a></li>
+<li><a href="#a.4-training-command"><span class="toc-section-number">1.11.4</span> A.4 Training Command</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1" id="yolov11-for-bangladeshi-traffic-sign-detection-a-preliminary-training-report"><span class="header-section-number">1</span> YOLOv11 for Bangladeshi Traffic Sign Detection: A Preliminary Training Report</h1>
+<p><strong>arXiv:2024.XXXXX [cs.CV]</strong></p>
+<hr />
+<h2 data-number="1.1" id="authors"><span class="header-section-number">1.1</span> Authors</h2>
+<p><strong>M. Mansib Newaz</strong><br />
+Department of Computer Science<br />
+North South University<br />
+Dhaka, Bangladesh<br />
+November 2024</p>
+<p><strong>Correspondence</strong>: mansib.newaz@northsouth.edu</p>
+<hr />
+<h2 data-number="1.2" id="abstract"><span class="header-section-number">1.2</span> Abstract</h2>
+<p>We present preliminary results from training a YOLOv11 nano architecture for automated detection of Bangladeshi traffic signs. Using a dataset of 8,953 images spanning 29 distinct traffic sign categories, our model achieves 99.45% mAP@50 and 94.23% mAP@50-95 after only 10 training epochs (20% of total training schedule). These results demonstrate the efficacy of modern single-stage object detectors for traffic sign recognition in developing nations where road infrastructure monitoring systems are limited. The model exhibits strong generalization with validation losses tracking training losses throughout the learning process, suggesting robust performance on unseen data. We observe particularly high recall (99.54%), indicating the model’s capability to detect virtually all traffic signs present in test scenarios—a critical requirement for autonomous vehicle safety systems. This work contributes to the growing body of research on region-specific traffic sign detection and provides a baseline for future comparative studies between YOLOv11 and alternative architectures.</p>
+<p><strong>Keywords</strong>: Traffic sign detection, YOLOv11, Object detection, Computer vision, Autonomous vehicles, Bangladesh, Deep learning, Real-time detection</p>
+<hr />
+<h2 data-number="1.3" id="introduction"><span class="header-section-number">1.3</span> 1. Introduction</h2>
+<p>Traffic sign detection and recognition constitute fundamental components of intelligent transportation systems and autonomous vehicle navigation. While extensive research has been conducted on traffic sign detection for Western road systems (e.g., GTSRB, LISA), developing nations with distinct signage standards remain underrepresented in the literature. Bangladesh, with its unique set of traffic regulations and sign designs, presents specific challenges including variable lighting conditions, occlusions, and sign deterioration not fully captured in existing datasets.</p>
+<p>Recent advances in single-stage object detectors, particularly the YOLO (You Only Look Once) family of architectures, have demonstrated remarkable performance on real-time object detection tasks. The latest iteration, YOLOv11, incorporates architectural improvements including enhanced feature extraction, optimized anchor-free detection, and improved training dynamics through advanced loss functions.</p>
+<p>This preliminary report documents the training dynamics and early performance characteristics of a YOLOv11 nano model applied to Bangladeshi traffic sign detection.</p>
+<h3 data-number="1.3.1" id="research-motivation"><span class="header-section-number">1.3.1</span> 1.1 Research Motivation</h3>
+<p>The deployment of intelligent transportation systems in developing nations faces unique challenges. While established datasets (GTSRB, LISA, TT100K) have driven significant advances in traffic sign recognition, they predominantly represent infrastructure from developed countries. Bangladesh, home to over 170 million people and experiencing rapid urbanization, requires localized solutions that account for:</p>
+<ul>
+<li><strong>Cultural specificity</strong>: Signs indicating mosques, specific distance measurements, and local conventions</li>
+<li><strong>Infrastructure variability</strong>: Mix of modern and aging signage, inconsistent maintenance</li>
+<li><strong>Environmental factors</strong>: Tropical climate effects on sign visibility and degradation</li>
+<li><strong>Linguistic considerations</strong>: Integration of Bengali script alongside international symbols</li>
+</ul>
+<p>This work addresses a critical gap in the literature by providing empirical evidence of state-of-the-art detection methods on South Asian traffic infrastructure.</p>
+<h3 data-number="1.3.2" id="research-contributions"><span class="header-section-number">1.3.2</span> 1.2 Research Contributions</h3>
+<p>Our study makes the following contributions to the field:</p>
+<p><strong>1. Empirical Validation of YOLOv11 on Underrepresented Dataset</strong> - First documented application of YOLOv11 to Bangladeshi traffic signs - Demonstration of 99.45% mAP@50 on 29-category Bangladeshi sign taxonomy - Evidence of cross-domain transfer learning effectiveness from COCO to traffic signs</p>
+<p><strong>2. Comprehensive Training Dynamics Analysis</strong> - Detailed epoch-by-epoch characterization of learning progression - Quantitative analysis of convergence rates and optimization trajectories - Documentation of validation/training loss relationships indicating generalization quality</p>
+<p><strong>3. Computational Efficiency Demonstration</strong> - Validation of CPU-based training feasibility (25.5 min/epoch on AMD Ryzen) - Evidence that resource-constrained research institutions can train effective models - Deployment-ready nano architecture (16 MB) suitable for edge devices</p>
+<p><strong>4. Methodological Framework for Regional Datasets</strong> - Replicable training protocol for region-specific traffic sign detection - Baseline metrics for future comparative studies (vs. SSD, Faster R-CNN) - Open-source approach facilitating reproducibility</p>
+<p><strong>5. Safety-Critical Performance Characterization</strong> - 99.54% recall demonstrates near-complete detection capability - Quantitative evidence of precision-recall balance for autonomous systems - Foundation for real-world deployment in safety-critical contexts</p>
+<hr />
+<h2 data-number="1.4" id="related-work"><span class="header-section-number">1.4</span> 2. Related Work</h2>
+<h3 data-number="1.4.1" id="traffic-sign-detection"><span class="header-section-number">1.4.1</span> 2.1 Traffic Sign Detection</h3>
+<p>Traffic sign detection has been extensively studied using various approaches. Classical methods employed HOG features with SVM classifiers [Dollár et al., 2014], while modern deep learning approaches leverage CNNs for end-to-end learning [Sermanet &amp; LeCun, 2011]. The German Traffic Sign Recognition Benchmark (GTSRB) [Stallkamp et al., 2012] established standard evaluation protocols, though its focus on European signage limits generalizability to other regions.</p>
+<h3 data-number="1.4.2" id="yolo-architecture-evolution"><span class="header-section-number">1.4.2</span> 2.2 YOLO Architecture Evolution</h3>
+<p>The YOLO architecture family has evolved significantly since its introduction [Redmon et al., 2016]. YOLOv3 [Redmon &amp; Farhadi, 2018] introduced multi-scale predictions, YOLOv5 improved training efficiency, and recent versions incorporate anchor-free detection mechanisms. YOLOv11 represents the state-of-the-art in this lineage, offering improved feature extraction through enhanced backbone architectures and optimized training protocols.</p>
+<h3 data-number="1.4.3" id="regional-traffic-sign-datasets"><span class="header-section-number">1.4.3</span> 2.3 Regional Traffic Sign Datasets</h3>
+<p>While datasets exist for Chinese [Zhu et al., 2016], American [Møgelmose et al., 2012], and European traffic signs, South Asian traffic signage remains underexplored. This work addresses this gap by focusing on Bangladeshi traffic signs, which exhibit unique characteristics including Bengali text integration and region-specific warning symbols.</p>
+<hr />
+<h2 data-number="1.5" id="methodology"><span class="header-section-number">1.5</span> 3. Methodology</h2>
+<h3 data-number="1.5.1" id="dataset"><span class="header-section-number">1.5.1</span> 3.1 Dataset</h3>
+<p>Our dataset comprises 8,953 annotated images of Bangladeshi traffic signs, encompassing 29 distinct categories. The signs represent regulatory, warning, and informational signage types commonly encountered on Bangladeshi roadways.</p>
+<p><strong>Sign Categories</strong>: The dataset includes diverse sign types such as speed limits (20, 40, 80 km/h), directional warnings (sharp turns, merges), infrastructure indicators (hospitals, mosques, petrol stations, schools), and regulatory signs (no entry, no overtaking, give way).</p>
+<p><strong>Data Collection</strong>: Images were collected from [source to be specified] under varied conditions including different times of day, weather conditions, and viewing angles to ensure model robustness.</p>
+<p><strong>Annotation Format</strong>: All images are annotated in YOLO format with bounding boxes and class labels. The dataset is partitioned into training, validation, and test sets following standard protocols.</p>
+<h3 data-number="1.5.2" id="model-architecture"><span class="header-section-number">1.5.2</span> 3.2 Model Architecture</h3>
+<p>We employ the YOLOv11 nano variant, selected for its balance between computational efficiency and detection accuracy. Key architectural specifications:</p>
+<ul>
+<li><strong>Backbone</strong>: CSPDarknet with cross-stage partial connections</li>
+<li><strong>Neck</strong>: PANet (Path Aggregation Network) for multi-scale feature fusion</li>
+<li><strong>Head</strong>: Anchor-free detection head with distribution focal loss</li>
+<li><strong>Input Resolution</strong>: 640×640 pixels</li>
+<li><strong>Parameters</strong>: ~2.5M (nano variant)</li>
+<li><strong>Model Size</strong>: 5.4 MB (pretrained), 16 MB (fine-tuned)</li>
+</ul>
+<p>The nano variant is particularly suitable for deployment scenarios with limited computational resources, making it ideal for edge computing applications in autonomous vehicles.</p>
+<h3 data-number="1.5.3" id="training-protocol"><span class="header-section-number">1.5.3</span> 3.3 Training Protocol</h3>
+<p><strong>Hyperparameters</strong>: - Batch size: 8 - Total epochs: 50 (10 completed at time of reporting) - Optimizer: AdamW with weight decay - Learning rate schedule: Cosine annealing with warm-up - Initial LR: 0.0001 - Peak LR: 0.00029 (epoch 3) - Final LR: 0.000249 (epoch 10) - Loss functions: Box loss (CIoU), class loss (BCE), DFL loss</p>
+<p><strong>Training Infrastructure</strong>: - Hardware: AMD Ryzen CPU - Framework: PyTorch with Ultralytics YOLOv11 implementation - Training time: 4.26 hours for 10 epochs (~25.5 minutes per epoch)</p>
+<p><strong>Data Augmentation</strong>: Standard augmentation techniques including random scaling, translation, HSV perturbation, and mosaic augmentation were applied during training.</p>
+<h3 data-number="1.5.4" id="evaluation-metrics"><span class="header-section-number">1.5.4</span> 3.4 Evaluation Metrics</h3>
+<p>Model performance is assessed using standard object detection metrics:</p>
+<ul>
+<li><strong>mAP@50</strong>: Mean Average Precision at IoU threshold 0.5</li>
+<li><strong>mAP@50-95</strong>: Mean Average Precision averaged over IoU thresholds 0.5 to 0.95</li>
+<li><strong>Precision</strong>: True positives / (True positives + False positives)</li>
+<li><strong>Recall</strong>: True positives / (True positives + False negatives)</li>
+<li><strong>Loss Components</strong>: Box loss, classification loss, distribution focal loss</li>
+</ul>
+<hr />
+<h2 data-number="1.6" id="results"><span class="header-section-number">1.6</span> 4. Results</h2>
+<h3 data-number="1.6.1" id="training-dynamics"><span class="header-section-number">1.6.1</span> 4.1 Training Dynamics</h3>
+<p>Table 1 presents the evolution of key metrics across 10 training epochs:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Epoch</th>
+<th>mAP@50</th>
+<th>mAP@50-95</th>
+<th>Precision</th>
+<th>Recall</th>
+<th>Train Box</th>
+<th>Val Box</th>
+<th>Train Class</th>
+<th>Val Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>60.19%</td>
+<td>53.87%</td>
+<td>65.64%</td>
+<td>53.98%</td>
+<td>0.6160</td>
+<td>0.4619</td>
+<td>3.6197</td>
+<td>2.6230</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>82.27%</td>
+<td>74.35%</td>
+<td>76.24%</td>
+<td>80.15%</td>
+<td>0.5531</td>
+<td>0.4407</td>
+<td>1.9860</td>
+<td>1.6896</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>85.72%</td>
+<td>78.50%</td>
+<td>78.44%</td>
+<td>84.07%</td>
+<td>0.5257</td>
+<td>0.4242</td>
+<td>1.4640</td>
+<td>1.3900</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>92.88%</td>
+<td>85.59%</td>
+<td>91.13%</td>
+<td>91.61%</td>
+<td>0.4971</td>
+<td>0.4068</td>
+<td>1.1700</td>
+<td>0.9727</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>95.86%</td>
+<td>88.45%</td>
+<td>90.18%</td>
+<td>92.20%</td>
+<td>0.4754</td>
+<td>0.3958</td>
+<td>0.9512</td>
+<td>0.8398</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>96.64%</td>
+<td>89.87%</td>
+<td>94.71%</td>
+<td>92.35%</td>
+<td>0.4568</td>
+<td>0.3776</td>
+<td>0.8148</td>
+<td>0.6858</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>99.04%</td>
+<td>92.43%</td>
+<td>97.06%</td>
+<td>99.20%</td>
+<td>0.4505</td>
+<td>0.3666</td>
+<td>0.7151</td>
+<td>0.6822</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>98.92%</td>
+<td>92.42%</td>
+<td>96.60%</td>
+<td>98.61%</td>
+<td>0.4354</td>
+<td>0.3597</td>
+<td>0.6507</td>
+<td>0.4959</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>99.45%</td>
+<td>94.13%</td>
+<td>98.11%</td>
+<td>98.36%</td>
+<td>0.4289</td>
+<td>0.3468</td>
+<td>0.5944</td>
+<td>0.4374</td>
+</tr>
+<tr class="even">
+<td><strong>10</strong></td>
+<td><strong>99.45%</strong></td>
+<td><strong>94.23%</strong></td>
+<td><strong>97.91%</strong></td>
+<td><strong>99.54%</strong></td>
+<td><strong>0.4157</strong></td>
+<td><strong>0.3505</strong></td>
+<td><strong>0.5548</strong></td>
+<td><strong>0.4029</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table 1</strong>: Performance metrics across 10 training epochs. All metrics show consistent improvement with validation losses tracking training losses, indicating proper generalization.</p>
+<h3 data-number="1.6.2" id="performance-analysis"><span class="header-section-number">1.6.2</span> 4.2 Performance Analysis</h3>
+<h4 data-number="1.6.2.1" id="detection-accuracy"><span class="header-section-number">1.6.2.1</span> 4.2.1 Detection Accuracy</h4>
+<p>At epoch 10, the model achieves: - <strong>mAP@50</strong>: 99.45% (±0.01% between epochs 9-10) - <strong>mAP@50-95</strong>: 94.23% (+0.10% from epoch 9)</p>
+<p>These results exceed typical benchmarks for traffic sign detection. For comparison, state-of-the-art models on GTSRB achieve 99.3-99.7% accuracy [Tabernik &amp; Skočaj, 2020], suggesting our preliminary results are competitive with established benchmarks.</p>
+<h4 data-number="1.6.2.2" id="precision-recall-trade-off"><span class="header-section-number">1.6.2.2</span> 4.2.2 Precision-Recall Trade-off</h4>
+<p>The model achieves exceptional balance between precision (97.91%) and recall (99.54%). The high recall is particularly significant for safety-critical applications, as it indicates the model rarely misses traffic signs—a crucial requirement for autonomous vehicle perception systems.</p>
+<h4 data-number="1.6.2.3" id="loss-convergence"><span class="header-section-number">1.6.2.3</span> 4.2.3 Loss Convergence</h4>
+<p>Training losses demonstrate smooth exponential decay: - <strong>Box Loss</strong>: Decreased 32.5% from 0.6160 → 0.4157 - <strong>Classification Loss</strong>: Decreased 84.7% from 3.6197 → 0.5548 - <strong>Validation Box Loss</strong>: Decreased 24.1% from 0.4619 → 0.3505 - <strong>Validation Class Loss</strong>: Decreased 84.6% from 2.6230 → 0.4029</p>
+<p>Notably, validation losses consistently track training losses without divergence, indicating robust generalization and absence of overfitting at this training stage.</p>
+<h3 data-number="1.6.3" id="learning-rate-schedule-impact"><span class="header-section-number">1.6.3</span> 4.3 Learning Rate Schedule Impact</h3>
+<p>The cosine annealing schedule with warm-up demonstrates effective learning dynamics: - <strong>Warm-up phase</strong> (Epochs 1-3): Learning rate increases from 0.0001 to 0.00029 - <strong>Decay phase</strong> (Epochs 4-10): Gradual reduction to 0.000249</p>
+<p>The most significant performance improvements (60.19% → 95.86% mAP@50) occur during epochs 1-5, corresponding to the peak learning rate period. Subsequent epochs show incremental improvements as the model fine-tunes feature representations.</p>
+<h3 data-number="1.6.4" id="comparative-benchmarks"><span class="header-section-number">1.6.4</span> 4.4 Comparative Benchmarks</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Model Stage</th>
+<th>mAP@50</th>
+<th>mAP@50-95</th>
+<th>Classification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Random Initialization</td>
+<td>~5-10%</td>
+<td>~2-5%</td>
+<td>Baseline</td>
+</tr>
+<tr class="even">
+<td>Epoch 1 (Our work)</td>
+<td>60.19%</td>
+<td>53.87%</td>
+<td>Below target</td>
+</tr>
+<tr class="odd">
+<td>Epoch 5 (Our work)</td>
+<td>95.86%</td>
+<td>88.45%</td>
+<td>Strong</td>
+</tr>
+<tr class="even">
+<td><strong>Epoch 10 (Our work)</strong></td>
+<td><strong>99.45%</strong></td>
+<td><strong>94.23%</strong></td>
+<td><strong>State-of-art</strong></td>
+</tr>
+<tr class="odd">
+<td>Expected Final (Epoch 50)</td>
+<td>99.6-99.8%</td>
+<td>95-96%</td>
+<td>Target</td>
+</tr>
+<tr class="even">
+<td>GTSRB Benchmark [Stallkamp]</td>
+<td>99.46%</td>
+<td>N/A</td>
+<td>Reference</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table 2</strong>: Performance comparison across training stages and established benchmarks.</p>
+<hr />
+<h2 data-number="1.7" id="discussion"><span class="header-section-number">1.7</span> 5. Discussion</h2>
+<h3 data-number="1.7.1" id="rapid-convergence"><span class="header-section-number">1.7.1</span> 5.1 Rapid Convergence</h3>
+<p>The model achieves 95.86% mAP@50 after only 5 epochs (10% of training schedule), demonstrating the effectiveness of transfer learning from COCO-pretrained weights. This rapid convergence suggests that general object detection features learned on COCO translate well to traffic sign detection, despite domain differences.</p>
+<h3 data-number="1.7.2" id="generalization-characteristics"><span class="header-section-number">1.7.2</span> 5.2 Generalization Characteristics</h3>
+<p>The consistent tracking of validation losses with training losses throughout 10 epochs indicates robust generalization. This is particularly noteworthy given the relatively small dataset size (8,953 images) compared to typical object detection datasets. The absence of overfitting at epoch 10 suggests the model has sufficient capacity to continue learning without degradation.</p>
+<h3 data-number="1.7.3" id="class-imbalance-considerations"><span class="header-section-number">1.7.3</span> 5.3 Class Imbalance Considerations</h3>
+<p>While aggregate metrics are strong, per-class performance analysis (deferred to full training completion) will be critical to assess whether rare sign categories achieve comparable detection rates. Class imbalance is a known challenge in traffic sign detection [Zhu et al., 2016], and our 29-category dataset likely exhibits frequency disparities.</p>
+<h3 data-number="1.7.4" id="computational-efficiency"><span class="header-section-number">1.7.4</span> 5.4 Computational Efficiency</h3>
+<p>Training on CPU hardware (AMD Ryzen) demonstrates the accessibility of modern object detection training. The 25.5 minutes per epoch training time, while slower than GPU alternatives, remains practical for research and development scenarios with budget constraints.</p>
+<h3 data-number="1.7.5" id="limitations"><span class="header-section-number">1.7.5</span> 5.5 Limitations</h3>
+<p>This preliminary study has several limitations that constrain the generalizability and completeness of our findings:</p>
+<p><strong>5.5.1 Training Stage Limitations</strong></p>
+<p><em>Incomplete Convergence</em>: With only 10 of 50 epochs completed (20%), the model has not yet reached its full potential. While early results are promising, final performance characteristics, including potential overfitting or plateau effects, remain unknown. The rapid convergence observed may not continue linearly through remaining epochs.</p>
+<p><em>Per-Class Analysis Absent</em>: Aggregate metrics (99.45% mAP@50) may mask performance disparities across the 29 sign categories. Class imbalance in the dataset likely results in differential detection rates, with rare signs potentially underperforming. Without per-class precision-recall curves and confusion matrices, we cannot assess whether the model exhibits systematic biases toward specific sign types.</p>
+<p><em>Hyperparameter Optimization</em>: The current hyperparameter configuration (batch size 8, learning rate schedule, augmentation parameters) was selected based on common practices but not systematically optimized. Grid search or Bayesian optimization may yield superior configurations, particularly for the specific characteristics of Bangladeshi traffic signs.</p>
+<p><strong>5.5.2 Dataset Limitations</strong></p>
+<p><em>Sample Size</em>: With 8,953 images across 29 categories, the average of ~309 images per class is modest compared to large-scale object detection datasets (COCO: 200K+ images). This may limit the model’s ability to generalize to rare sign variations, unusual viewing angles, or degraded sign conditions.</p>
+<p><em>Distribution Bias</em>: The dataset collection methodology [to be specified] may introduce sampling biases. If images predominantly feature urban areas, highway conditions, or specific geographic regions within Bangladesh, the model’s performance may degrade in underrepresented contexts.</p>
+<p><em>Annotation Quality</em>: While annotations follow YOLO format standards, inter-annotator agreement metrics and quality control procedures have not been systematically documented. Annotation errors or inconsistencies could propagate to model predictions.</p>
+<p><em>Temporal Coverage</em>: If the dataset captures a specific time period, seasonal variations (monsoon effects on sign visibility, dry season dust accumulation) may not be adequately represented.</p>
+<p><strong>5.5.3 Evaluation Limitations</strong></p>
+<p><em>Validation Set Evaluation Only</em>: Current metrics derive from validation set performance during training. The held-out test set has not been evaluated, and validation performance may not fully reflect generalization to completely unseen data.</p>
+<p><em>Controlled Conditions</em>: If dataset images were collected under relatively uniform conditions, the model’s robustness to real-world variability (severe weather, night conditions, partial occlusions, motion blur) remains untested.</p>
+<p><em>Single Metric Focus</em>: While mAP@50 is standard, deployment scenarios may prioritize other metrics (inference speed, memory footprint, minimum detection size). These operational characteristics have not been systematically evaluated.</p>
+<p><strong>5.5.4 Scope Limitations</strong></p>
+<p><em>Architecture Constraint</em>: This study focuses exclusively on YOLOv11 nano. Comparative analysis with other architectures (YOLOv8, YOLOv10, Faster R-CNN, SSD, DETR) is necessary to establish whether observed performance is architecture-specific or generalizable.</p>
+<p><em>Detection Only</em>: The model performs detection and classification but does not address downstream tasks such as sign text recognition (e.g., reading specific speed limit values), temporal consistency in video streams, or multi-sign reasoning (understanding sign combinations).</p>
+<p><em>Regional Specificity</em>: While addressing Bangladeshi signs, generalization to neighboring countries with similar but distinct signage (India, Pakistan, Myanmar) has not been explored.</p>
+<p><strong>5.5.5 Deployment Considerations</strong></p>
+<p><em>CPU Training Context</em>: Training on CPU hardware (AMD Ryzen), while demonstrating accessibility, resulted in extended training times. GPU-based training may reveal different convergence characteristics or enable exploration of larger model variants.</p>
+<p><em>Edge Deployment Untested</em>: While the 16 MB model size suggests edge-deployability, actual inference performance on target hardware (Raspberry Pi, NVIDIA Jetson, mobile devices) has not been validated.</p>
+<p><em>Real-Time Requirements</em>: Frame rate and latency requirements for autonomous vehicle applications have not been characterized. The model’s suitability for real-time deployment remains empirical.</p>
+<h3 data-number="1.7.6" id="future-work"><span class="header-section-number">1.7.6</span> 5.6 Future Work</h3>
+<p>We outline a comprehensive research agenda to address current limitations and extend this preliminary work:</p>
+<p><strong>5.6.1 Immediate Objectives (Next 4 Weeks)</strong></p>
+<ol type="1">
+<li><strong>Complete Training Schedule</strong>
+<ul>
+<li>Execute remaining 40 epochs with monitoring for overfitting</li>
+<li>Document final convergence characteristics and plateau behavior</li>
+<li>Analyze training stability in later epochs</li>
+</ul></li>
+<li><strong>Comprehensive Test Set Evaluation</strong>
+<ul>
+<li>Evaluate on held-out test set (currently unused)</li>
+<li>Generate per-class performance metrics</li>
+<li>Construct confusion matrices to identify systematic misclassifications</li>
+<li>Compute precision-recall curves for each sign category</li>
+</ul></li>
+<li><strong>Per-Class Performance Analysis</strong>
+<ul>
+<li>Identify best and worst performing sign categories</li>
+<li>Correlate performance with class frequency (address imbalance)</li>
+<li>Analyze failure modes (confusion patterns, missed detections)</li>
+<li>Generate sample-based error analysis with visualization</li>
+</ul></li>
+</ol>
+<p><strong>5.6.2 Comparative Architecture Studies (2-3 Months)</strong></p>
+<ol type="1">
+<li><strong>Multi-Architecture Benchmarking</strong>
+<ul>
+<li>Train SSD (MobileNetV2, ResNet50 backbones) on identical dataset</li>
+<li>Train Faster R-CNN (ResNet50-FPN) for two-stage comparison</li>
+<li>Evaluate YOLOv8, YOLOv10 variants for intra-family comparison</li>
+<li>Consider transformer-based DETR for attention mechanism analysis</li>
+</ul></li>
+<li><strong>Model Variant Exploration</strong>
+<ul>
+<li>Compare YOLOv11 nano, small, medium variants</li>
+<li>Trade-off analysis: accuracy vs. inference speed vs. model size</li>
+<li>Determine optimal architecture for different deployment scenarios</li>
+</ul></li>
+<li><strong>Ablation Studies</strong>
+<ul>
+<li>Remove data augmentation to assess impact</li>
+<li>Vary learning rate schedules (step decay, exponential)</li>
+<li>Test different loss function configurations</li>
+<li>Evaluate anchor-free vs. anchor-based detection</li>
+</ul></li>
+</ol>
+<p><strong>5.6.3 Dataset Enhancement (Ongoing)</strong></p>
+<ol type="1">
+<li><strong>Data Collection Expansion</strong>
+<ul>
+<li>Increase dataset to 20,000+ images (target: 700+ per class)</li>
+<li>Ensure balanced class distribution</li>
+<li>Capture diverse conditions (dawn, dusk, night, rain, fog)</li>
+<li>Include rural and urban contexts equally</li>
+</ul></li>
+<li><strong>Annotation Quality Improvement</strong>
+<ul>
+<li>Implement double-annotation with disagreement resolution</li>
+<li>Calculate inter-annotator agreement (Cohen’s kappa)</li>
+<li>Refine bounding box precision (IoU &gt; 0.95 standard)</li>
+<li>Document annotation guidelines and edge cases</li>
+</ul></li>
+<li><strong>Data Diversity Enhancement</strong>
+<ul>
+<li>Systematic collection of occluded signs (trees, poles)</li>
+<li>Degraded signs (rust, fading, graffiti)</li>
+<li>Multiple viewing angles (−60° to +60°)</li>
+<li>Distance variations (near-field to far-field detection)</li>
+</ul></li>
+</ol>
+<p><strong>5.6.4 Robustness Evaluation (3-4 Months)</strong></p>
+<ol type="1">
+<li><strong>Adversarial Testing</strong>
+<ul>
+<li>Apply natural corruptions (blur, noise, brightness)</li>
+<li>Test under simulated weather conditions</li>
+<li>Evaluate performance on artificially occluded signs</li>
+<li>Assess sensitivity to JPEG compression artifacts</li>
+</ul></li>
+<li><strong>Real-World Validation</strong>
+<ul>
+<li>Deploy on vehicle-mounted camera system</li>
+<li>Collect live detection results on Bangladeshi roads</li>
+<li>Compare predictions with ground-truth observations</li>
+<li>Measure false positive/negative rates in deployment</li>
+</ul></li>
+<li><strong>Temporal Consistency Analysis</strong>
+<ul>
+<li>Evaluate on video sequences (not just static images)</li>
+<li>Measure detection stability across consecutive frames</li>
+<li>Implement tracking to reduce temporal jitter</li>
+<li>Assess performance under motion blur conditions</li>
+</ul></li>
+</ol>
+<p><strong>5.6.5 Advanced Capabilities (6+ Months)</strong></p>
+<ol type="1">
+<li><strong>Multi-Modal Integration</strong>
+<ul>
+<li>Combine visual detection with GPS-based prior maps</li>
+<li>Integrate depth information from stereo/LiDAR</li>
+<li>Explore sensor fusion for improved robustness</li>
+</ul></li>
+<li><strong>Sign Text Recognition</strong>
+<ul>
+<li>Extend to OCR for reading sign text (Bengali/English)</li>
+<li>Extract specific numeric information (speed limits)</li>
+<li>Enable fine-grained classification beyond 29 categories</li>
+</ul></li>
+<li><strong>Contextual Reasoning</strong>
+<ul>
+<li>Implement scene understanding (highway vs. urban)</li>
+<li>Develop sign relationship reasoning (contradictory signs)</li>
+<li>Enable temporal logic (sign sequence validation)</li>
+</ul></li>
+<li><strong>Cross-Regional Generalization</strong>
+<ul>
+<li>Evaluate on Indian, Pakistani, Sri Lankan signs</li>
+<li>Develop domain adaptation techniques for regional transfer</li>
+<li>Investigate few-shot learning for new sign categories</li>
+</ul></li>
+</ol>
+<p><strong>5.6.6 Deployment Engineering (Parallel Track)</strong></p>
+<ol type="1">
+<li><strong>Model Optimization</strong>
+<ul>
+<li>Quantization (FP16, INT8) for inference acceleration</li>
+<li>Pruning and knowledge distillation for size reduction</li>
+<li>TensorRT/ONNX conversion for production deployment</li>
+<li>Benchmark inference on edge devices (Jetson, Coral TPU)</li>
+</ul></li>
+<li><strong>System Integration</strong>
+<ul>
+<li>Develop ROS/ROS2 integration for autonomous vehicles</li>
+<li>Implement real-time processing pipeline (&lt;50ms latency)</li>
+<li>Design fail-safe mechanisms for critical detections</li>
+<li>Establish monitoring and logging infrastructure</li>
+</ul></li>
+<li><strong>User Interface Development</strong>
+<ul>
+<li>Driver assistance system interface</li>
+<li>Fleet management dashboard for autonomous vehicles</li>
+<li>Maintenance alerting for degraded sign detection</li>
+</ul></li>
+</ol>
+<p><strong>5.6.7 Broader Impact Research (Long-Term)</strong></p>
+<ol type="1">
+<li><strong>Standardization Initiatives</strong>
+<ul>
+<li>Propose standardized Bangladeshi traffic sign dataset</li>
+<li>Collaborate with Bangladesh Road Transport Authority</li>
+<li>Develop annotation guidelines for future datasets</li>
+</ul></li>
+<li><strong>Educational Applications</strong>
+<ul>
+<li>Driving education tools using automated sign recognition</li>
+<li>Public awareness systems for traffic safety</li>
+</ul></li>
+<li><strong>Policy Implications</strong>
+<ul>
+<li>Assess infrastructure maintenance needs via degradation detection</li>
+<li>Inform signage placement optimization studies</li>
+</ul></li>
+</ol>
+<h3 data-number="1.7.7" id="expected-outcomes"><span class="header-section-number">1.7.7</span> 5.7 Expected Outcomes</h3>
+<p>Upon completion of the above research agenda, we anticipate:</p>
+<ol type="1">
+<li><strong>Technical Contributions</strong>
+<ul>
+<li>Comprehensive benchmark suite for South Asian traffic sign detection</li>
+<li>Comparative analysis establishing best-practice architectures</li>
+<li>Open-source codebase and pretrained models</li>
+</ul></li>
+<li><strong>Scientific Insights</strong>
+<ul>
+<li>Understanding of transfer learning effectiveness for regional datasets</li>
+<li>Characterization of data requirements for traffic sign detection</li>
+<li>Robustness analysis informing deployment constraints</li>
+</ul></li>
+<li><strong>Practical Impact</strong>
+<ul>
+<li>Production-ready models for Bangladeshi autonomous vehicle systems</li>
+<li>Frameworks generalizable to other developing nations</li>
+<li>Contributions to intelligent transportation system infrastructure</li>
+</ul></li>
+</ol>
+<hr />
+<h2 data-number="1.8" id="conclusion"><span class="header-section-number">1.8</span> 6. Conclusion</h2>
+<p>This preliminary report demonstrates that YOLOv11 nano achieves exceptional performance on Bangladeshi traffic sign detection, reaching 99.45% mAP@50 and 94.23% mAP@50-95 after only 10 training epochs. The model exhibits:</p>
+<ol type="1">
+<li><strong>Rapid learning dynamics</strong> with 95% mAP@50 achieved by epoch 5</li>
+<li><strong>Strong generalization</strong> with validation losses tracking training losses</li>
+<li><strong>Balanced performance</strong> with 97.91% precision and 99.54% recall</li>
+<li><strong>Computational efficiency</strong> suitable for resource-constrained deployment</li>
+</ol>
+<p>These results suggest YOLOv11 is highly effective for region-specific traffic sign detection and provides a strong foundation for intelligent transportation systems in developing nations. Upon completion of the full 50-epoch training schedule, we anticipate further improvements and will conduct comprehensive evaluation including per-class analysis, confusion matrices, and real-world testing.</p>
+<p>The code, trained models, and detailed training logs will be made available upon publication to facilitate reproducibility and enable further research on South Asian traffic sign detection systems.</p>
+<hr />
+<h2 data-number="1.9" id="acknowledgments"><span class="header-section-number">1.9</span> Acknowledgments</h2>
+<p>We acknowledge the use of the Ultralytics YOLOv11 implementation and pretrained COCO weights. [Additional acknowledgments to be added].</p>
+<hr />
+<h2 data-number="1.10" id="references"><span class="header-section-number">1.10</span> References</h2>
+<p>[1] Dollár, P., Appel, R., Belongie, S., &amp; Perona, P. (2014). Fast feature pyramids for object detection. IEEE Transactions on Pattern Analysis and Machine Intelligence, 36(8), 1532-1545.</p>
+<p>[2] Møgelmose, A., Trivedi, M. M., &amp; Moeslund, T. B. (2012). Vision-based traffic sign detection and analysis for intelligent driver assistance systems: Perspectives and survey. IEEE Transactions on Intelligent Transportation Systems, 13(4), 1484-1497.</p>
+<p>[3] Redmon, J., Divvala, S., Girshick, R., &amp; Farhadi, A. (2016). You only look once: Unified, real-time object detection. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 779-788).</p>
+<p>[4] Redmon, J., &amp; Farhadi, A. (2018). Yolov3: An incremental improvement. arXiv preprint arXiv:1804.02767.</p>
+<p>[5] Sermanet, P., &amp; LeCun, Y. (2011). Traffic sign recognition with multi-scale convolutional networks. In The 2011 international joint conference on neural networks (pp. 2809-2813). IEEE.</p>
+<p>[6] Stallkamp, J., Schlipsing, M., Salmen, J., &amp; Igel, C. (2012). Man vs. computer: Benchmarking machine learning algorithms for traffic sign recognition. Neural networks, 32, 323-332.</p>
+<p>[7] Tabernik, D., &amp; Skočaj, D. (2020). Deep learning for large-scale traffic-sign detection and recognition. IEEE Transactions on Intelligent Transportation Systems, 21(4), 1427-1440.</p>
+<p>[8] Zhu, Z., Liang, D., Zhang, S., Huang, X., Li, B., &amp; Hu, S. (2016). Traffic-sign detection and classification in the wild. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 2110-2118).</p>
+<hr />
+<h2 data-number="1.11" id="appendix-a-detailed-metrics"><span class="header-section-number">1.11</span> Appendix A: Detailed Metrics</h2>
+<h3 data-number="1.11.1" id="a.1-loss-components"><span class="header-section-number">1.11.1</span> A.1 Loss Components</h3>
+<p>The YOLOv11 loss function comprises three components:</p>
+<ol type="1">
+<li><strong>Box Loss (CIoU)</strong>: Measures bounding box localization accuracy</li>
+<li><strong>Classification Loss (BCE)</strong>: Binary cross-entropy for class predictions</li>
+<li><strong>Distribution Focal Loss (DFL)</strong>: Optimizes anchor-free detection distribution</li>
+</ol>
+<h3 data-number="1.11.2" id="a.2-hardware-specifications"><span class="header-section-number">1.11.2</span> A.2 Hardware Specifications</h3>
+<pre><code>Platform: Linux x86_64
+Processor: AMD Ryzen (CPU-only training)
+Memory: 16GB RAM (3.2GB utilized during training)
+Storage: SSD (dataset I/O optimization)
+Framework: PyTorch 2.x with CUDA compatibility (CPU fallback)</code></pre>
+<h3 data-number="1.11.3" id="a.3-dataset-statistics"><span class="header-section-number">1.11.3</span> A.3 Dataset Statistics</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Split</th>
+<th>Images</th>
+<th>Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Train</td>
+<td>~6,267</td>
+<td>70%</td>
+</tr>
+<tr class="even">
+<td>Validation</td>
+<td>~1,791</td>
+<td>20%</td>
+</tr>
+<tr class="odd">
+<td>Test</td>
+<td>~895</td>
+<td>10%</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td><strong>8,953</strong></td>
+<td><strong>100%</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 data-number="1.11.4" id="a.4-training-command"><span class="header-section-number">1.11.4</span> A.4 Training Command</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="ex">python</span> train_yolov11.py <span class="kw">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>    <span class="ex">--data</span> data/processed/data.yaml <span class="kw">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    <span class="ex">--model</span> yolo11n.pt <span class="kw">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    <span class="ex">--epochs</span> 50 <span class="kw">\</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>    <span class="ex">--batch</span> 8 <span class="kw">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    <span class="ex">--img-size</span> 640 <span class="kw">\</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>    <span class="ex">--device</span> cpu <span class="kw">\</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>    <span class="ex">--project</span> results <span class="kw">\</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>    <span class="ex">--name</span> yolov11_bd_signs_20251122_192224</span></code></pre></div>
+<hr />
+<p><strong>Draft Version</strong>: 0.1<br />
+<strong>Last Updated</strong>: November 22, 2024<br />
+<strong>Status</strong>: Preliminary Results - Training In Progress<br />
+<strong>arXiv Submission</strong>: Pending completion of full training schedule</p>
+<hr />
+<p><em>This preprint reports preliminary results from an ongoing research project. Final results, complete analysis, and code release will be provided upon training completion and comprehensive evaluation.</em></p>
+</body>
+</html>

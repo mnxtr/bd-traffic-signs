@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="primary">#006A4E</color>
+    <color name="primary_dark">#004D38</color>
+    <color name="primary_light">#00966E</color>
+    <color name="accent">#FF5722</color> <!-- Warmer Orange-Red -->
+    
+    <!-- Background Colors -->
+    <color name="background">#FFF3E0</color> <!-- Warm Cream -->
+    <color name="surface">#FFFBFA</color> <!-- Warm White -->
+    <color name="camera_background">#D7CCC8</color> <!-- Warm Gray -->
+    <color name="sign_background">#EFEBE9</color> <!-- Warm Light Gray -->
+    <color name="info_background">#FFF8E1</color> <!-- Warm Light Yellow -->
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#3E2723</color> <!-- Dark Brown -->
+    <color name="text_secondary">#5D4037</color> <!-- Medium Brown -->
+    <color name="text_hint">#8D6E63</color> <!-- Light Brown -->
+    
+    <!-- Status Colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="error">#D32F2F</color>
+    <color name="info">#F57C00</color> <!-- Warm Orange for info -->
+    
+    <!-- Divider -->
+    <color name="divider">#D7CCC8</color>
+</resources>
