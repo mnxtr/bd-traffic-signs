@@ -30,3 +30,10 @@ results/
 models/
 data/
 android-app/.gradle/
+logs/
+backup_before_organization/
+.organization_log.json
+
+# Temporary files
+temp.html
+*.tmp
