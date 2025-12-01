@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Website Under Construction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      max-width: 480px;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      color: #38bdf8;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      margin-bottom: 1.2rem;
+      line-height: 1.5;
+      color: #cbd5f5;
+    }
+
+    .highlight {
+      color: #38bdf8;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .time-box {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid #1e293b;
+      padding: 0.75rem 0.9rem;
+      border-radius: 0.5rem;
+      min-width: 70px;
+    }
+
+    .time-box span {
+      display: block;
+    }
+
+    .time-number {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #e5e7eb;
+    }
+
+    .time-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #9ca3af;
+    }
+
+    form {
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    input[type="email"] {
+      padding: 0.6rem 0.8rem;
+      border-radius: 0.375rem;
+      border: 1px solid #1e293b;
+      min-width: 220px;
+      background: #020617;
+      color: #e5e7eb;
+    }
+
+    input[type="email"]::placeholder {
+      color: #6b7280;
+    }
+
+    button {
+      padding: 0.6rem 1.1rem;
+      border-radius: 0.375rem;
+      border: none;
+      background: #38bdf8;
+      color: #020617;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+      transform: translateY(-1px);
+    }
+
+    .footer {
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .social {
+      margin-top: 0.75rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .social a {
+      color: #9ca3af;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    .social a:hover {
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">Your Logo</div>
+
+    <h1>We&rsquo;re <span class="highlight">Under Construction</span></h1>
+    <p>
+      Our new website is on the way. We&rsquo;re working hard to give you a better experience.
+      Stay tuned and subscribe to get notified when we launch.
+    </p>
+
+    <div class="countdown" id="countdown">
+      <div class="time-box">
+        <span class="time-number" id="days">00</span>
+        <span class="time-label">Days</span>
+      </div>
+      <div class="time-box">
+        <span class="time-number" id="hours">00</span>
+        <span class="time-label">Hours</span>
+      </div>
+      <div class="time-box">
+        <span class="time-number" id="minutes">00</span>
+        <span class="time-label">Minutes</span>
+      </div>
+      <div class="time-box">
+        <span class="time-number" id="seconds">00</span>
+        <span class="time-label">Seconds</span>
+      </div>
+    </div>
+
+    <form action="#" method="post">
+      <input type="email" name="email" placeholder="Enter your email for updates" required />
+      <button type="submit">Notify Me</button>
+    </form>
+
+    <div class="footer">
+      <div>© 2025 Your Company. All rights reserved.</div>
+      <div class="social">
+        <a href="#">Facebook</a>
+        <a href="#">X</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Set your launch date and time here (Year, Month-1, Day, Hour, Minute)
+    const launchDate = new Date(2025, 11, 31, 23, 59).getTime();
+
+    const timer = setInterval(function () {
+      const now = new Date().getTime();
+      const distance = launchDate - now;
+
+      if (distance < 0) {
+        clearInterval(timer);
+        document.getElementById("countdown").innerHTML = "We are live!";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor(
+        (distance % (1000 * 60 * 60)) / (1000 * 60)
+      );
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("days").textContent = String(days).padStart(2, "0");
+      document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+      document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+      document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+    }, 1000);
+  </script>
+</body>
+</html>
+
+
+
+
+
+

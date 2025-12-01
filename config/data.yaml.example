@@ -1,0 +1,29 @@
+# Example data.yaml configuration for YOLO training
+# Copy this file and customize for your dataset
+
+# Dataset root path (absolute or relative to this file)
+path: /home/mnx/bd-traffic-signs/data/processed
+
+# Train/val/test image directories (relative to 'path')
+train: train/images
+val: val/images
+test: test/images
+
+# Number of classes
+nc: 10
+
+# Class names (must match annotation class IDs: 0, 1, 2, ...)
+names:
+  0: stop_sign
+  1: speed_limit_40
+  2: speed_limit_60
+  3: speed_limit_80
+  4: no_entry
+  5: one_way
+  6: pedestrian_crossing
+  7: yield
+  8: danger
+  9: construction
+
+# Optional: Additional configuration
+# download: false  # Set to URL or script to auto-download dataset

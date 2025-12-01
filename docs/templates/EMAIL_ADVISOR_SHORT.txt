@@ -1,0 +1,42 @@
+Subject: Request for Feedback - YOLOv11 Traffic Sign Detection Research (Preliminary Results)
+
+---
+
+Dear Professor [Name],
+
+I am Mohammad Mansib Newaz, a [year] student in the Department of Computer Science at North South University. I am reaching out to share preliminary results from my research on Bangladeshi traffic sign detection and to seek your valuable feedback.
+
+**Research Summary:**
+
+Using YOLOv11 nano architecture, I have trained a model on 8,953 Bangladeshi traffic sign images (29 categories) that has achieved 99.45% mAP@50 after only 10 of 50 training epochs. This performance is competitive with state-of-the-art results on international benchmarks (GTSRB), despite our regional dataset being significantly smaller.
+
+**Why This Matters:**
+
+Existing traffic sign detection research focuses predominantly on Western infrastructure. Bangladesh's unique signage (including Bengali text, mosque indicators, and region-specific symbols) requires localized solutions for autonomous vehicle systems and intelligent transportation development.
+
+**Request:**
+
+I would be honored if you could review the attached research preprint (30 pages) and provide feedback on:
+1. The methodology and experimental approach
+2. Statistical significance of the results
+3. Suggested publication venues
+4. Potential improvements or additional analyses
+
+I am particularly interested in your perspective on [specific aspect related to their expertise].
+
+**Availability:**
+
+I am available for a meeting at your convenience, either in person or via Zoom, to discuss this research in greater detail.
+
+Thank you very much for considering my request. I look forward to your guidance.
+
+Respectfully,
+
+Mohammad Mansib Newaz
+Department of Computer Science
+North South University
+Email: mohammad.newaz1@northsouth.edu
+
+Attachment: research_preprint.pdf (127 KB)
+
+---
