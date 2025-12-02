@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangladeshi Road Sign Detection: YOLOv11 vs BRSSD</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Bangladeshi Road Sign Detection</h1>
+            <div class="subtitle">Benchmarking YOLOv11 and SSD Architectures for Local Traffic Conditions</div>
+        </header>
+
+        <div class="grid-container">
+            <!-- Introduction -->
+            <article class="card col-span-8">
+                <h2><i class="fas fa-bullseye"></i> Project Overview</h2>
+                <p>
+                    Autonomous driving systems require robust perception modules to navigate complex environments.
+                    This project addresses the challenge of detecting traffic signs in Bangladesh, characterized by
+                    unique visual noise, occlusion, and diverse lighting conditions.
+                </p>
+                <p>
+                    We present a comparative analysis of <span class="highlight">YOLOv11</span> (You Only Look Once)
+                    and <span class="highlight">SSD</span> (Single Shot MultiBox Detector), evaluating their efficacy
+                    for real-time deployment on edge devices.
+                </p>
+            </article>
+
+            <!-- Key Stats / Highlights -->
+            <article class="card col-span-4">
+                <h2><i class="fas fa-chart-line"></i> Key Metrics</h2>
+                <ul>
+                    <li><strong>Dataset:</strong> Custom BD Traffic Signs</li>
+                    <li><strong>Classes:</strong> 10+ Categories</li>
+                    <li><strong>Models:</strong> YOLOv11n, SSD-MobileNet</li>
+                    <li><strong>Target:</strong> Real-time Inference</li>
+                </ul>
+            </article>
+
+            <!-- Methodology -->
+            <article class="card col-span-4">
+                <h2><i class="fas fa-cogs"></i> Methodology</h2>
+                <ol>
+                    <li><strong>Data Acquisition:</strong> Manual capture & web scraping.</li>
+                    <li><strong>Annotation:</strong> Bounding box labeling (YOLO format).</li>
+                    <li><strong>Preprocessing:</strong> Augmentation (Mosaic, Mixup) & Normalization.</li>
+                    <li><strong>Training:</strong> Transfer learning from COCO weights.</li>
+                    <li><strong>Validation:</strong> mAP@0.5 and FPS benchmarking.</li>
+                </ol>
+            </article>
+
+            <!-- Dataset Visualization -->
+            <article class="card col-span-8">
+                <h2><i class="fas fa-images"></i> Dataset Distribution</h2>
+                <p>A balanced dataset is crucial for unbiased model performance. The chart below illustrates the class
+                    distribution across our training set.</p>
+                <div class="image-wrapper">
+                    <img src="images/labels.jpg" alt="Dataset Class Distribution">
+                </div>
+                <div class="caption">Figure 1: Class distribution showing prevalence of different sign types.</div>
+            </article>
+
+            <!-- Results -->
+            <article class="card col-span-12">
+                <h2><i class="fas fa-tachometer-alt"></i> Performance Analysis</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <p>
+                            The training curves demonstrate rapid convergence for YOLOv11.
+                            The model achieves high precision and recall, indicating strong generalization capabilities.
+                        </p>
+                        <ul>
+                            <li><strong>mAP@0.5:</strong> > 0.90</li>
+                            <li><strong>Inference Time:</strong>
+                                < 10ms (GPU)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="image-wrapper">
+                            <img src="images/training_metrics.png" alt="Training Metrics">
+                        </div>
+                        <div class="caption">Figure 2: Training metrics (Loss, Precision, Recall, mAP) over epochs.
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Real World Demo -->
+            <article class="card col-span-6">
+                <h2><i class="fas fa-camera"></i> Real-world Detection</h2>
+                <p>Testing on unseen data reveals the model's robustness in cluttered scenes.</p>
+                <div class="image-wrapper">
+                    <img src="images/bus.jpg" alt="Bus Detection Example">
+                </div>
+                <div class="caption">Figure 3: Successful detection of traffic signs on a moving bus.</div>
+            </article>
+
+            <!-- Conclusion -->
+            <article class="card col-span-6">
+                <h2><i class="fas fa-flag-checkered"></i> Conclusion</h2>
+                <p>
+                    <strong>YOLOv11</strong> outperforms SSD in both accuracy and speed for this specific domain.
+                    Its architecture effectively handles small objects and partial occlusions common in Bangladeshi
+                    roads.
+                </p>
+                <p>
+                    Future work will focus on expanding the dataset to include night-time scenes and optimizing the
+                    model
+                    for embedded hardware like NVIDIA Jetson.
+                </p>
+            </article>
+        </div>
+
+        <footer>
+            <p>
+                <i class="fab fa-github"></i> <a href="https://github.com/mnxtr/bd-traffic-signs">View Source on
+                    GitHub</a>
+                &nbsp;|&nbsp;
+                Generated by Antigravity AI
+            </p>
+        </footer>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,4 @@
+Input Image,Confidence Threshold,Detections,timestamp
+,0.25,,2025-12-01 07:44:01.034952
+.gradio/flagged/Input Image/2df6bfcb47fda592798c/clipboard.png,0.44,.gradio/flagged/Detections/d2ac6af6aa9a47c05f5d/image.webp,2025-12-01 07:44:42.963180
+.gradio/flagged/Input Image/dca46a0d3cabdb4a2586/image.png,0.8,.gradio/flagged/Detections/ce283ad96357eae148ea/image.webp,2025-12-01 07:51:29.572128
