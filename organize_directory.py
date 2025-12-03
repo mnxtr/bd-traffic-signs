@@ -70,7 +70,9 @@ class DirectoryOrganizer:
             # Documentation - Guides
             "QUICKSTART.md": "docs/guides/QUICKSTART.md",
             "DOWNLOAD_GUIDE.md": "docs/guides/DOWNLOAD_GUIDE.md",
-            # Note: WARP.md is a symlink at root to .github/copilot-instructions.md
+            # Note: WARP.md is intentionally excluded from this mapping because it is a
+            # symlink at the repository root that points to .github/copilot-instructions.md.
+            # This provides convenient access to Copilot agent instructions from the root.
             
             # Documentation - Reports
             "TRAINING_PROGRESS_REPORT.md": "docs/reports/TRAINING_PROGRESS_REPORT.md",
