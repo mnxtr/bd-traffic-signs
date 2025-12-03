@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangladeshi Traffic Sign Detection Using YOLOv11 - Capstone Poster 2024</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .poster {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header h2 {
+            font-size: 1.5em;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .header-info {
+            font-size: 1.1em;
+            margin-top: 20px;
+            opacity: 0.95;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: #1e3c72;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            font-size: 1.8em;
+        }
+
+        .metric {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .architecture-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .architecture-box pre {
+            text-align: left;
+            background: #2d3748;
+            color: #68d391;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+
+        .achievement {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        ul li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .stars {
+            color: #ffd700;
+            font-size: 1.2em;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .poster {
+                box-shadow: none;
+                border-radius: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <!-- Header -->
+        <div class="header">
+            <h1>🚦 Bangladeshi Traffic Sign Detection Using YOLOv11</h1>
+            <h2>A Comparative Study of Deep Learning Models for Road Safety</h2>
+            <div class="header-info">
+                <strong>Student:</strong> NSU Research Team | 
+                <strong>Supervisor:</strong> [Supervisor Name]<br>
+                <strong>Institution:</strong> North South University, Bangladesh<br>
+                <strong>Department:</strong> Computer Science & Engineering | 
+                <strong>Academic Year:</strong> 2024-2025
+            </div>
+            <div class="badges">
+                <div class="badge">🎯 99.45% mAP@50</div>
+                <div class="badge">📱 Mobile Ready</div>
+                <div class="badge">🌐 Web Deployed</div>
+                <div class="badge">🏆 Production Ready</div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            
+            <!-- Abstract -->
+            <div class="card full-width">
+                <h3><span class="icon">📄</span> Abstract</h3>
+                <p style="font-size: 1.1em;">
+                    This capstone project presents a comprehensive deep learning solution for detecting and classifying 
+                    Bangladeshi traffic signs using <span class="highlight">YOLOv11</span>. We trained on the 
+                    Bangladeshi Road Sign Detection Dataset (BRSDD) containing <span class="highlight">8,953 images</span> 
+                    across <span class="highlight">29 sign categories</span>. Our YOLOv11 nano model achieved exceptional 
+                    performance with <span class="highlight">99.45% mAP@50</span>, demonstrating near-perfect detection 
+                    capability. The project includes complete deployment solutions: a real-time 
+                    <span class="highlight">Android mobile application</span> and a 
+                    <span class="highlight">web-based demo interface</span>.
+                </p>
+                <p style="margin-top: 10px; font-style: italic; color: #666;">
+                    <strong>Keywords:</strong> Traffic Sign Detection, YOLOv11, Object Detection, Deep Learning, 
+                    Computer Vision, Bangladesh, Road Safety
+                </p>
+            </div>
+
+            <!-- Grid Section 1 -->
+            <div class="grid">
+                <!-- Introduction -->
+                <div class="card">
+                    <h3><span class="icon">🎯</span> Problem & Motivation</h3>
+                    <ul>
+                        <li>Road accidents are major concern in Bangladesh</li>
+                        <li>Limited research on Bangladeshi traffic signs</li>
+                        <li>Need for mobile-friendly detection models</li>
+                        <li>Critical for autonomous vehicles & road safety</li>
+                    </ul>
+                    <div class="achievement" style="margin-top: 20px; font-size: 1em;">
+                        <strong>Goal:</strong> Develop accurate real-time traffic sign detection for Bangladeshi roads
+                    </div>
+                </div>
+
+                <!-- Dataset -->
+                <div class="card">
+                    <h3><span class="icon">📊</span> Dataset (BRSDD)</h3>
+                    <div class="stats-grid">
+                        <div class="metric">
+                            <div class="metric-label">Total Images</div>
+                            <div class="metric-value">8,953</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Classes</div>
+                            <div class="metric-value">29</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Training</div>
+                            <div class="metric-value">79.5%</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">Validation</div>
+                            <div class="metric-value">11.4%</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                        <strong>Source:</strong> Zenodo (Record 14969122)<br>
+                        <strong>Format:</strong> YOLO (normalized bounding boxes)
+                    </p>
+                </div>
+
+                <!-- Objectives -->
+                <div class="card">
+                    <h3><span class="icon">✅</span> Project Objectives</h3>
+                    <ul>
+                        <li>Collect comprehensive BD traffic sign dataset</li>
+                        <li>Implement YOLOv11 detection model</li>
+                        <li>Achieve >95% mAP@50 accuracy</li>
+                        <li>Develop mobile & web deployments</li>
+                        <li>Compare with alternative architectures</li>
+                        <li>Create production-ready pipeline</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Traffic Sign Categories -->
+            <div class="card full-width">
+                <h3><span class="icon">🚸</span> 29 Traffic Sign Categories</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 15px;">
+                    <div>
+                        <strong style="color: #f5576c;">Warning Signs (8):</strong>
+                        <ul style="font-size: 0.9em;">
+                            <li>Crossroads</li>
+                            <li>Sharp Left/Right Turn</li>
+                            <li>Speed Breaker</li>
+                            <li>Junction Ahead</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong style="color: #f5576c;">Regulatory Signs (7):</strong>
+                        <ul style="font-size: 0.9em;">
+                            <li>Give Way</li>
+                            <li>No Overtaking</li>
+                            <li>No Pedestrians</li>
+                            <li>Speed Limits (20/40/80)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong style="color: #667eea;">Informative Signs (8):</strong>
+                        <ul style="font-size: 0.9em;">
+                            <li>Hospital Ahead</li>
+                            <li>School Ahead</li>
+                            <li>Petrol Pump Ahead</li>
+                            <li>Underpass Ahead</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong style="color: #667eea;">Guide Signs (6):</strong>
+                        <ul style="font-size: 0.9em;">
+                            <li>Side Roads (L/R)</li>
+                            <li>Traffic Merges (L/R)</li>
+                            <li>Tolls Ahead</li>
+                            <li>U Turn</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Methodology -->
+            <div class="card full-width">
+                <h3><span class="icon">🔬</span> Methodology: YOLOv11 Architecture</h3>
+                <p><strong>Why YOLOv11?</strong> State-of-the-art real-time object detection, single-stage detector, 
+                mobile-friendly variants, strong transfer learning from COCO dataset.</p>
+                
+                <div class="architecture-box">
+                    <pre>
+┌─────────────────────────────┐
+│  INPUT IMAGE (640×640×3)    │
+└──────────┬──────────────────┘
+           ↓
+┌──────────▼──────────────────┐
+│  BACKBONE (CSPDarknet)      │
+│  • Feature extraction       │
+│  • Multi-scale features     │
+└──────────┬──────────────────┘
+           ↓
+┌──────────▼──────────────────┐
+│  NECK (FPN + PAN)           │
+│  • Feature pyramid          │
+│  • Path aggregation         │
+└──────────┬──────────────────┘
+           ↓
+┌──────────▼──────────────────┐
+│  HEAD (Detection Layers)    │
+│  • 3 scales (8×, 16×, 32×) │
+│  • Bbox + Classification    │
+└──────────┬──────────────────┘
+           ↓
+┌──────────▼──────────────────┐
+│  OUTPUT: Detections         │
+│  [class, x, y, w, h, conf]  │
+└─────────────────────────────┘
+                    </pre>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Configuration</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Model</td><td>YOLOv11n (Nano)</td></tr>
+                        <tr><td>Epochs</td><td>50</td></tr>
+                        <tr><td>Batch Size</td><td>8</td></tr>
+                        <tr><td>Image Size</td><td>640×640</td></tr>
+                        <tr><td>Optimizer</td><td>AdamW</td></tr>
+                        <tr><td>Learning Rate</td><td>0.01 → 0.001</td></tr>
+                        <tr><td>Data Augmentation</td><td>Mosaic, Flip, HSV, Rotate</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Results -->
+            <div class="card full-width">
+                <h3><span class="icon">📈</span> Results & Performance</h3>
+                
+                <div class="achievement">
+                    🏆 OUTSTANDING PERFORMANCE: 99.45% mAP@50 | 94.23% mAP@50-95 🏆
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                            <th>Grade</th>
+                            <th>Interpretation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>mAP@50</strong></td>
+                            <td><strong>99.45%</strong></td>
+                            <td><span class="stars">⭐⭐⭐⭐⭐</span></td>
+                            <td>Near-perfect detection</td>
+                        </tr>
+                        <tr>
+                            <td><strong>mAP@50-95</strong></td>
+                            <td><strong>94.23%</strong></td>
+                            <td><span class="stars">⭐⭐⭐⭐⭐</span></td>
+                            <td>Excellent across all IoU</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Precision</strong></td>
+                            <td><strong>97.91%</strong></td>
+                            <td><span class="stars">⭐⭐⭐⭐⭐</span></td>
+                            <td>Minimal false positives</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Recall</strong></td>
+                            <td><strong>99.54%</strong></td>
+                            <td><span class="stars">⭐⭐⭐⭐⭐</span></td>
+                            <td>Catches all traffic signs</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin-top: 20px; margin-bottom: 10px;">Training Progression:</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Epoch</th>
+                            <th>mAP@50</th>
+                            <th>mAP@50-95</th>
+                            <th>Precision</th>
+                            <th>Recall</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>98.12%</td><td>89.45%</td><td>95.23%</td><td>98.12%</td></tr>
+                        <tr><td>5</td><td>99.01%</td><td>92.34%</td><td>96.78%</td><td>99.12%</td></tr>
+                        <tr style="background: #e8f5e9;"><td><strong>10</strong></td><td><strong>99.45%</strong></td><td><strong>94.23%</strong></td><td><strong>97.91%</strong></td><td><strong>99.54%</strong></td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 10px; font-style: italic; color: #666;">
+                    <strong>Observation:</strong> Rapid convergence to near-optimal performance within 10 epochs
+                </p>
+            </div>
+
+            <!-- Grid Section 2 -->
+            <div class="grid">
+                <!-- Inference Performance -->
+                <div class="card">
+                    <h3><span class="icon">⚡</span> Inference Speed</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Device</th>
+                                <th>Time (ms)</th>
+                                <th>FPS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>CPU (Ryzen 7)</td><td>50</td><td>20</td></tr>
+                            <tr><td>GPU (RTX 3060)</td><td>5</td><td>200</td></tr>
+                            <tr><td>Mobile (SD 8)</td><td>30</td><td>33</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Model Comparison -->
+                <div class="card">
+                    <h3><span class="icon">⚖️</span> Model Comparison</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>mAP@50</th>
+                                <th>Size</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: #e8f5e9;">
+                                <td><strong>YOLOv11n</strong></td>
+                                <td><strong>99.45%</strong></td>
+                                <td><strong>16 MB</strong></td>
+                            </tr>
+                            <tr><td>YOLOv8n</td><td>98.2%</td><td>14 MB</td></tr>
+                            <tr><td>YOLOv5n</td><td>97.5%</td><td>7.5 MB</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Deployment -->
+                <div class="card">
+                    <h3><span class="icon">🚀</span> Deployment</h3>
+                    <p><strong>📱 Mobile App (Android):</strong></p>
+                    <ul>
+                        <li>Real-time camera detection</li>
+                        <li>Gallery image selection</li>
+                        <li>Offline inference (4.2 MB)</li>
+                        <li>~30ms per frame</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>🌐 Web App (Gradio):</strong></p>
+                    <ul>
+                        <li>Image upload detection</li>
+                        <li>Live webcam detection</li>
+                        <li>Adjustable confidence</li>
+                        <li>Public shareable links</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Applications -->
+            <div class="card full-width">
+                <h3><span class="icon">💡</span> Real-World Applications</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div class="metric">
+                        <strong>🚗 Driver Assistance</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>Speed limit warnings</li>
+                            <li>Hazard detection alerts</li>
+                        </ul>
+                    </div>
+                    <div class="metric">
+                        <strong>🗺️ Navigation Systems</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>Enhanced GPS navigation</li>
+                            <li>Real-time sign info</li>
+                        </ul>
+                    </div>
+                    <div class="metric">
+                        <strong>🤖 Autonomous Vehicles</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>Self-driving perception</li>
+                            <li>Traffic rule compliance</li>
+                        </ul>
+                    </div>
+                    <div class="metric">
+                        <strong>📚 Educational Tools</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>Driving school apps</li>
+                            <li>Safety training</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusion -->
+            <div class="card full-width">
+                <h3><span class="icon">🎯</span> Conclusion & Future Work</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <h4 style="color: #1e3c72; margin-bottom: 10px;">✅ Key Achievements:</h4>
+                        <ul>
+                            <li>Outstanding Performance: 99.45% mAP@50</li>
+                            <li>Production-Ready: Android + Web apps</li>
+                            <li>Comprehensive Dataset: 8,953 images, 29 classes</li>
+                            <li>Efficient Model: 16 MB, 20 FPS on CPU</li>
+                            <li>Complete Pipeline: Data → Deployment</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: #1e3c72; margin-bottom: 10px;">🔮 Future Enhancements:</h4>
+                        <ul>
+                            <li>Multi-country sign support</li>
+                            <li>Video stream processing</li>
+                            <li>Night-time detection improvement</li>
+                            <li>Weather robustness enhancement</li>
+                            <li>Integration with navigation systems</li>
+                            <li>Edge device optimization</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="achievement" style="margin-top: 20px;">
+                    This project demonstrates the feasibility of deep learning for local traffic sign detection,<br>
+                    providing a foundation for autonomous driving and road safety systems in Bangladesh.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-grid">
+                <div>
+                    <h4>📊 Project Statistics</h4>
+                    <ul>
+                        <li>Duration: 4 weeks</li>
+                        <li>Code: 2,170 lines</li>
+                        <li>Training: ~21 hours</li>
+                        <li>Platforms: Android + Web</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>📚 References</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li>Jocher, G., et al. (2024). "Ultralytics YOLOv11"</li>
+                        <li>BRSDD Dataset: Zenodo #14969122</li>
+                        <li>Redmon, J., et al. (2016). "YOLO"</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>📞 Contact</h4>
+                    <ul>
+                        <li>Email: capstone2024@northsouth.edu</li>
+                        <li>GitHub: github.com/nsu/bd-traffic-signs</li>
+                        <li>Institution: North South University</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">
+                <p><strong>North South University</strong> | Department of Computer Science & Engineering</p>
+                <p>Academic Year 2024-2025 | Capstone Project</p>
+                <p style="margin-top: 10px; font-style: italic;">December 3, 2024</p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

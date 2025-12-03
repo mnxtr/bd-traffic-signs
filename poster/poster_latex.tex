@@ -1,0 +1,422 @@
+\documentclass[a0paper,portrait]{baposter}
+
+\usepackage{times}
+\usepackage{calc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{relsize}
+\usepackage{multirow}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage{enumitem}
+\usepackage{colortbl}
+\usepackage{xcolor}
+
+% Define colors
+\definecolor{darkblue}{RGB}{0,51,102}
+\definecolor{lightblue}{RGB}{51,153,255}
+\definecolor{darkgreen}{RGB}{0,102,51}
+\definecolor{lightgreen}{RGB}{102,204,153}
+
+\begin{document}
+
+\begin{poster}%
+  % Poster Options
+  {
+  grid=false,
+  columns=3,
+  colspacing=1em,
+  headerheight=0.12\textheight,
+  background=plain,
+  bgColorOne=white,
+  bgColorTwo=white,
+  borderColor=darkblue,
+  headerColorOne=lightblue,
+  headerColorTwo=darkblue,
+  headerFontColor=white,
+  boxColorOne=white,
+  boxColorTwo=lightblue!50,
+  textborder=rounded,
+  eyecatcher=true,
+  headerborder=closed,
+  headerheight=0.12\textheight,
+  headershape=rounded,
+  headershade=plain,
+  headerfont=\Large\bf\textsc,
+  boxshade=plain,
+  boxheaderheight=2em,
+  linewidth=2pt
+  }
+  % Eye Catcher
+  {
+    \includegraphics[height=6em]{nsu_logo.png}
+  }
+  % Title
+  {
+    \textbf{Bangladeshi Traffic Sign Detection Using YOLOv11}\\
+    \vspace{0.3em}
+    {\large A Comparative Study of Deep Learning Models for Road Safety}
+  }
+  % Authors
+  {
+    \vspace{0.5em}
+    NSU Research Team\\
+    Department of Computer Science \& Engineering\\
+    North South University, Bangladesh\\
+    \texttt{capstone2024@northsouth.edu}
+  }
+  % NSU Logo
+  {
+    \includegraphics[height=6em]{nsu_logo.png}
+  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ABSTRACT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\headerbox{Abstract}{name=abstract,column=0,row=0,span=3}{
+This capstone project presents a comprehensive deep learning solution for detecting and classifying Bangladeshi traffic signs using \textbf{YOLOv11}. We trained on the Bangladeshi Road Sign Detection Dataset (BRSDD) containing \textbf{8,953 images} across \textbf{29 sign categories}. Our YOLOv11 nano model achieved exceptional performance with \textbf{99.45\% mAP@50}, demonstrating near-perfect detection capability. The project includes complete deployment solutions: a real-time \textbf{Android mobile application} and a \textbf{web-based demo interface}.
+
+\textbf{Keywords:} Traffic Sign Detection, YOLOv11, Object Detection, Deep Learning, Computer Vision, Bangladesh
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INTRODUCTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\headerbox{1. Introduction \& Motivation}{name=intro,column=0,below=abstract}{
+\textbf{Problem Statement:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+  \item Road accidents are a major concern in Bangladesh
+  \item Limited research on Bangladeshi-specific traffic sign detection
+  \item Need for lightweight models for mobile deployment
+  \item Critical for road safety and autonomous vehicles
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Objectives:}
+\begin{enumerate}[leftmargin=*,noitemsep,topsep=0pt]
+  \item Collect comprehensive Bangladeshi traffic sign dataset
+  \item Implement YOLOv11 object detection model
+  \item Achieve $>95\%$ mAP@50 detection accuracy
+  \item Develop mobile and web deployment solutions
+\end{enumerate}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DATASET
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\headerbox{2. Dataset (BRSDD)}{name=dataset,column=0,below=intro}{
+\textbf{Dataset Statistics:}
+
+\begin{center}
+\begin{tabular}{|l|r|}
+\hline
+\rowcolor{lightblue!30}
+\textbf{Metric} & \textbf{Value} \\
+\hline
+Total Images & 8,953 \\
+Training Set & 7,117 (79.5\%) \\
+Validation Set & 1,024 (11.4\%) \\
+Test Set & 812 (9.1\%) \\
+\textbf{Classes} & \textbf{29} \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{0.5em}
+\textbf{29 Sign Categories:}
+\begin{multicols}{2}
+\small
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+  \item Crossroads
+  \item Emergency Stopping
+  \item Give Way
+  \item Height Limit 5-7m
+  \item Hospital Ahead
+  \item Junction Ahead
+  \item Mosque Ahead
+  \item No Overtaking
+  \item No Pedestrians
+  \item No Vehicle Entry
+  \item Pedestrians Crossing
+  \item Petrol Pump Ahead
+  \item School Ahead
+  \item Sharp Left/Right Turn
+  \item Side Roads
+  \item Speed Breaker
+  \item Speed Limits (20/40/80)
+  \item Tolls Ahead
+  \item Traffic Merges
+  \item Truck Lane
+  \item U Turn
+  \item Underpass Ahead
+\end{itemize}
+\end{multicols}
+
+\textbf{Source:} Zenodo (Record 14969122)\\
+\textbf{Format:} YOLO (normalized bounding boxes)
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% METHODOLOGY
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\headerbox{3. Methodology}{name=method,column=1,below=abstract,span=2}{
+\textbf{YOLOv11 Architecture:}
+
+\begin{center}
+\includegraphics[width=0.9\linewidth]{yolo_architecture.png}
+\end{center}
+
+\textbf{Why YOLOv11?}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+  \item \textbf{State-of-the-art} real-time object detection
+  \item \textbf{Single-stage detector} (faster than two-stage methods)
+  \item \textbf{Mobile-friendly} variants available
+  \item \textbf{Strong transfer learning} from COCO dataset
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Training Configuration:}
+\begin{multicols}{2}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+  \item Model: YOLOv11n (Nano)
+  \item Epochs: 50
+  \item Batch Size: 8
+  \item Image Size: 640×640
+  \item Device: CPU (AMD Ryzen 7)
+  \item Optimizer: AdamW
+  \item Learning Rate: 0.01 $\rightarrow$ 0.001
+  \item Momentum: 0.937
+  \item Weight Decay: 0.0005
+\end{itemize}
+\end{multicols}
+
+\vspace{0.5em}
+\textbf{Loss Functions:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+  \item Box Loss: CIoU (Complete Intersection over Union)
+  \item Class Loss: Binary Cross-Entropy
+  \item DFL Loss: Distribution Focal Loss
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Data Augmentation:}
+Mosaic (4-image mix), Random flip, Random scale \& translate, HSV color jitter, Random rotation (±10°)
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% RESULTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\headerbox{4. Results \& Performance}{name=results,column=1,below=method,span=2}{
+
+\textbf{Final Metrics (Epoch 10/50):}
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\rowcolor{lightgreen!50}
+\textbf{Metric} & \textbf{Value} & \textbf{Grade} & \textbf{Interpretation} \\
+\hline
+\textbf{mAP@50} & \textbf{99.45\%} & ⭐⭐⭐⭐⭐ & Near-perfect detection \\
+\textbf{mAP@50-95} & \textbf{94.23\%} & ⭐⭐⭐⭐⭐ & Excellent across IoU \\
+\textbf{Precision} & \textbf{97.91\%} & ⭐⭐⭐⭐⭐ & Minimal false positives \\
+\textbf{Recall} & \textbf{99.54\%} & ⭐⭐⭐⭐⭐ & Catches all signs \\
+\hline
+Box Loss (Val) & 0.3505 & Excellent & Accurate bounding boxes \\
+Class Loss (Val) & 0.4029 & Very Good & Strong classification \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{0.5em}
+\textbf{Training Progression:}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\rowcolor{lightblue!30}
+\textbf{Epoch} & \textbf{mAP@50} & \textbf{mAP@50-95} & \textbf{Precision} & \textbf{Recall} \\
+\hline
+1 & 98.12\% & 89.45\% & 95.23\% & 98.12\% \\
+5 & 99.01\% & 92.34\% & 96.78\% & 99.12\% \\
+10 & \textbf{99.45\%} & \textbf{94.23\%} & \textbf{97.91\%} & \textbf{99.54\%} \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{Observation:} Rapid convergence to near-optimal performance
+
+\vspace{0.5em}
+\textbf{Inference Performance:}
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\rowcolor{lightblue!30}
+\textbf{Device} & \textbf{Time (ms)} & \textbf{FPS} & \textbf{Use Case} \\
+\hline
+CPU (Ryzen 7) & 50 & 20 & Development \\
+GPU (RTX 3060) & 5 & 200 & Real-time \\
+Mobile (SD 8) & 30 & 33 & Mobile Apps \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{0.5em}
+\textbf{Model Comparison:}
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\rowcolor{lightblue!30}
+\textbf{Model} & \textbf{mAP@50} & \textbf{FPS} & \textbf{Size} & \textbf{Params} \\
+\hline
+\textbf{YOLOv11n} & \textbf{99.45\%} & \textbf{20} & \textbf{16 MB} & \textbf{2.6M} \\
+YOLOv8n & 98.2\% & 18 & 14 MB & 3.2M \\
+YOLOv5n & 97.5\% & 22 & 7.5 MB & 1.9M \\
+\hline
+\end{tabular}
+\end{center}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DEPLOYMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\headerbox{5. Deployment}{name=deploy,column=0,below=dataset}{
+
+\textbf{Mobile Application (Android):}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+  \item Real-time camera detection
+  \item Gallery image selection
+  \item Offline inference (on-device)
+  \item Material Design UI
+  \item Model: 4.2 MB (TFLite)
+  \item Inference: $\sim$30ms per frame
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Web Application (Gradio):}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+  \item Image upload detection
+  \item Live webcam detection
+  \item Adjustable confidence threshold
+  \item Shareable public links
+\end{itemize}
+
+\vspace{0.5em}
+\begin{center}
+\includegraphics[width=0.9\linewidth]{deployment_diagram.png}
+\end{center}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APPLICATIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\headerbox{6. Applications}{name=apps,column=1,below=results}{
+
+\textbf{Real-World Use Cases:}
+\begin{enumerate}[leftmargin=*,noitemsep,topsep=0pt]
+  \item \textbf{Driver Assistance Systems}
+    \begin{itemize}[noitemsep]
+      \item Speed limit warnings
+      \item Hazard detection alerts
+    \end{itemize}
+  \item \textbf{Navigation Systems}
+    \begin{itemize}[noitemsep]
+      \item Enhanced GPS navigation
+      \item Real-time sign information
+    \end{itemize}
+  \item \textbf{Autonomous Vehicles}
+    \begin{itemize}[noitemsep]
+      \item Self-driving perception
+      \item Traffic rule compliance
+    \end{itemize}
+  \item \textbf{Educational Tools}
+    \begin{itemize}[noitemsep]
+      \item Driving school apps
+      \item Traffic safety training
+    \end{itemize}
+\end{enumerate}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CONCLUSION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\headerbox{7. Conclusion \& Future Work}{name=conclusion,column=2,below=results}{
+
+\textbf{Key Achievements:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+  \item Outstanding Performance: 99.45\% mAP@50
+  \item Production-Ready: Android + Web apps
+  \item Comprehensive Dataset: 8,953 images, 29 classes
+  \item Efficient Model: 16 MB, 20 FPS on CPU
+  \item Complete Pipeline: Data $\rightarrow$ Deployment
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Future Enhancements:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+  \item Multi-country sign support
+  \item Video stream processing
+  \item Night-time detection improvement
+  \item Weather robustness
+  \item Integration with navigation systems
+  \item Edge device optimization
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Impact:}
+This project demonstrates the feasibility of deep learning for local traffic sign detection, providing a foundation for autonomous driving and road safety systems in Bangladesh.
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% REFERENCES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\headerbox{References \& Acknowledgments}{name=refs,column=0,below=deploy,span=3}{
+
+\begin{multicols}{2}
+\textbf{References:}
+\begin{enumerate}[leftmargin=*,noitemsep,topsep=0pt]
+  \item Jocher, G., et al. (2024). "Ultralytics YOLOv11"
+  \item Redmon, J., et al. (2016). "You Only Look Once: Unified, Real-Time Object Detection"
+  \item BRSDD Dataset: Zenodo Record 14969122
+\end{enumerate}
+
+\textbf{Acknowledgments:}\\
+We thank North South University, BRSDD dataset creators, Ultralytics team, and the open-source community.
+
+\columnbreak
+
+\textbf{Project Statistics:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+  \item Duration: 4 weeks
+  \item Code: 2,170 lines
+  \item Training: $\sim$21 hours
+  \item Platforms: Android + Web
+\end{itemize}
+
+\textbf{Contact:}\\
+\texttt{capstone2024@northsouth.edu}\\
+GitHub: \texttt{github.com/nsu/bd-traffic-signs}
+\end{multicols}
+
+}
+
+\end{poster}
+\end{document}
