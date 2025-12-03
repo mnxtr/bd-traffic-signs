@@ -37,7 +37,29 @@ class DirectoryOrganizer:
         self.backup_dir = self.project_root / "backup_before_organization"
         
     def get_file_mappings(self) -> Dict[str, str]:
-        """Define source to destination mappings for all files to be moved."""
+        """Define source to destination mappings for all files to be moved.
+        
+        Note: Most files have already been organized. This mapping is kept for
+        reference and for any new files that may be added to the project root.
+        Files are organized into the following structure:
+        
+        - docs/research/    : Research papers and preprints
+        - docs/guides/      : User guides and documentation
+        - docs/reports/     : Progress reports and summaries
+        - docs/templates/   : Email and other templates
+        - docs/web/         : Web-related files (HTML)
+        - scripts/data/     : Data processing scripts
+        - scripts/monitoring/: Monitoring scripts
+        - scripts/visualization/: Plotting and visualization scripts
+        - scripts/utils/    : Utility scripts
+        - scripts/setup/    : Setup and installation scripts
+        - assets/images/    : Image files
+        - assets/calibration/: Calibration data
+        - assets/models/    : Model weights (note: large files should be in .gitignore)
+        - config/           : Configuration files
+        - logs/             : Log files (in .gitignore)
+        - dependencies/     : External dependencies
+        """
         return {
             # Documentation - Research
             "RESEARCH_PAPER.md": "docs/research/RESEARCH_PAPER.md",
@@ -48,7 +70,7 @@ class DirectoryOrganizer:
             # Documentation - Guides
             "QUICKSTART.md": "docs/guides/QUICKSTART.md",
             "DOWNLOAD_GUIDE.md": "docs/guides/DOWNLOAD_GUIDE.md",
-            "WARP.md": "docs/guides/WARP.md",
+            # Note: WARP.md is a symlink at root to .github/copilot-instructions.md
             
             # Documentation - Reports
             "TRAINING_PROGRESS_REPORT.md": "docs/reports/TRAINING_PROGRESS_REPORT.md",
@@ -65,10 +87,6 @@ class DirectoryOrganizer:
             # Documentation - Web
             "index.html": "docs/web/index.html",
             "report.html": "docs/web/report.html",
-            
-            # Scripts - Data
-            "demo_workflow.py": "scripts/data/demo_workflow.py",
-            "export_quantized.py": "scripts/data/export_quantized.py",
             
             # Scripts - Monitoring
             "monitor_download.sh": "scripts/monitoring/monitor_download.sh",
@@ -90,15 +108,8 @@ class DirectoryOrganizer:
             # Assets - Calibration
             "calibration_image_sample_data_20x128x128x3_float32.npy": "assets/calibration/calibration_image_sample_data_20x128x128x3_float32.npy",
             
-            # Assets - Models
-            "yolo11n.pt": "assets/models/yolo11n.pt",
-            
             # Config
             "data.yaml.example": "config/data.yaml.example",
-            
-            # Logs
-            "download.log": "logs/download.log",
-            "download_new.log": "logs/download_new.log",
             
             # Dependencies
             "amdgpu-install_6.2.60204-1_all.deb": "dependencies/amdgpu-install_6.2.60204-1_all.deb",
