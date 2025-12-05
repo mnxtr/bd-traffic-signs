@@ -298,12 +298,12 @@ yolo detect predict \
 ## Next Steps
 
 1. ✅ Set up environment and dependencies
-2. ⏳ Collect and annotate Bangladeshi traffic sign dataset
-3. ⏳ Preprocess dataset
-4. ⏳ Train YOLOv11 model
-5. ⏳ Train SSD model
-6. ⏳ Evaluate and compare models
-7. ⏳ Deploy best performing model
+2. ✅ Collect and annotate Bangladeshi traffic sign dataset
+3. ✅ Preprocess dataset
+4. ✅ Train YOLOv11 model
+5. ✅ Train SSD model
+6. ✅ Evaluate and compare models
+7. ✅ Deploy best performing model
 
 ## Contributing
 
