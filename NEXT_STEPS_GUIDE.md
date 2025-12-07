@@ -14,14 +14,11 @@ code "CSE_499B_RESEARCH_PAPER.md"
 ```
 
 **Replace these placeholders:**
-- `[Student Name 1]` → Your actual name
-- `[Student Name 2]` → Second team member (or remove if solo)
-- `[Student Name 3]` → Third team member (or remove)
-- `[Student Name 4]` → Fourth team member (or remove)
-- `XXXXXXXXXX` → Your actual student IDs
+- `[Mohammad Mansib Newaz]` → Your actual name
+- `1931842642` → Your actual student IDs
 - `[Advisor Name]` → Your project supervisor's name
-- `[Title]` → Advisor's title (e.g., "Associate Professor")
-- `[Chairman Name]` → Department chairman's name
+- `[Associate Professor]` → Advisor's title (e.g., "Associate Professor")
+- `[]` → Department chairman's name
 
 **Search and replace command:**
 ```bash
