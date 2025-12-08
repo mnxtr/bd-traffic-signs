@@ -39,75 +39,41 @@ class DirectoryOrganizer:
     def get_file_mappings(self) -> Dict[str, str]:
         """Define source to destination mappings for all files to be moved."""
         return {
-            # Documentation - Research
+            # Documentation - Research Papers (main research outputs)
             "RESEARCH_PAPER.md": "docs/research/RESEARCH_PAPER.md",
-            "RESEARCH_PREPRINT.md": "docs/research/RESEARCH_PREPRINT.md",
-            "research_preprint.pdf": "docs/research/research_preprint.pdf",
-            "research_preprint.html": "docs/research/research_preprint.html",
+            "RESEARCH_PAPER.html": "docs/research/RESEARCH_PAPER.html",
+            "RESEARCH_PAPER.pdf": "docs/research/RESEARCH_PAPER.pdf",
+            "PREPRINT.md": "docs/research/PREPRINT.md",
+            "PREPRINT.html": "docs/research/PREPRINT.html",
+            "PREPRINT.pdf": "docs/research/PREPRINT.pdf",
+            "PREPRINT_A4.pdf": "docs/research/PREPRINT_A4.pdf",
+            "CSE_499B_RESEARCH_PAPER.md": "docs/research/CSE_499B_RESEARCH_PAPER.md",
+            "CSE_499B_FINAL_REPORT.pdf": "docs/research/CSE_499B_FINAL_REPORT.pdf",
+            "CSE_499B_REPORT.docx": "docs/research/CSE_499B_REPORT.docx",
+            "CSE_499B_COMPLETE_SUMMARY.txt": "docs/research/CSE_499B_COMPLETE_SUMMARY.txt",
+            "Traffic Signs.pdf": "docs/research/Traffic_Signs.pdf",
             
             # Documentation - Guides
-            "QUICKSTART.md": "docs/guides/QUICKSTART.md",
-            "DOWNLOAD_GUIDE.md": "docs/guides/DOWNLOAD_GUIDE.md",
-            "WARP.md": "docs/guides/WARP.md",
+            "NEXT_STEPS_GUIDE.md": "docs/guides/NEXT_STEPS_GUIDE.md",
+            "README_NEXT_STEPS.md": "docs/guides/README_NEXT_STEPS.md",
             
-            # Documentation - Reports
-            "TRAINING_PROGRESS_REPORT.md": "docs/reports/TRAINING_PROGRESS_REPORT.md",
-            "EXECUTION_SUMMARY.md": "docs/reports/EXECUTION_SUMMARY.md",
-            "IMPLEMENTATION_STATUS.md": "docs/reports/IMPLEMENTATION_STATUS.md",
-            "PLAN_EXECUTION.md": "docs/reports/PLAN_EXECUTION.md",
+            # Documentation - Reports/Status
+            "CODEBASE_ANALYSIS.md": "docs/reports/CODEBASE_ANALYSIS.md",
+            "PAPER_GENERATION_COMPLETE.md": "docs/reports/PAPER_GENERATION_COMPLETE.md",
+            "PAPER_READY.md": "docs/reports/PAPER_READY.md",
             
-            # Documentation - Templates
-            "EMAIL_TEMPLATE.txt": "docs/templates/EMAIL_TEMPLATE.txt",
-            "EMAIL_ADVISOR_SHORT.txt": "docs/templates/EMAIL_ADVISOR_SHORT.txt",
-            "EMAIL_COLLABORATION.txt": "docs/templates/EMAIL_COLLABORATION.txt",
-            "EMAIL_CONFERENCE.txt": "docs/templates/EMAIL_CONFERENCE.txt",
-            
-            # Documentation - Web
-            "index.html": "docs/web/index.html",
-            "report.html": "docs/web/report.html",
-            
-            # Scripts - Data
-            "demo_workflow.py": "scripts/data/demo_workflow.py",
-            "export_quantized.py": "scripts/data/export_quantized.py",
-            
-            # Scripts - Monitoring
-            "monitor_download.sh": "scripts/monitoring/monitor_download.sh",
-            
-            # Scripts - Visualization
-            "plot_training.py": "scripts/visualization/plot_training.py",
-            "generate_graph.sh": "scripts/visualization/generate_graph.sh",
+            # Archive - Old README
+            "README_old.md": "docs/archive/README_old.md",
             
             # Scripts - Utils
-            "convert_html_to_pdf.py": "scripts/utils/convert_html_to_pdf.py",
-            "quickref.sh": "scripts/utils/quickref.sh",
-            
-            # Scripts - Setup
-            "setup_rocm_pytorch.sh": "scripts/setup/setup_rocm_pytorch.sh",
-            
-            # Assets - Images
-            "bus.jpg": "assets/images/bus.jpg",
-            
-            # Assets - Calibration
-            "calibration_image_sample_data_20x128x128x3_float32.npy": "assets/calibration/calibration_image_sample_data_20x128x128x3_float32.npy",
-            
-            # Assets - Models
-            "yolo11n.pt": "assets/models/yolo11n.pt",
-            
-            # Config
-            "data.yaml.example": "config/data.yaml.example",
-            
-            # Logs
-            "download.log": "logs/download.log",
-            "download_new.log": "logs/download_new.log",
-            
-            # Dependencies
-            "amdgpu-install_6.2.60204-1_all.deb": "dependencies/amdgpu-install_6.2.60204-1_all.deb",
-            "amdgpu-install_6.2.60204-1_all.deb.1": "dependencies/amdgpu-install_6.2.60204-1_all.deb.1",
+            "quick_complete_paper.sh": "scripts/utils/quick_complete_paper.sh",
         }
     
     def get_files_to_delete(self) -> List[str]:
         """List of temporary files to delete."""
-        return ["temp.html"]
+        return [
+            ".~lock.CSE_499B_REPORT.docx#",  # LibreOffice lock file
+        ]
     
     def check_git_status(self) -> Tuple[bool, str]:
         """Check if there are uncommitted changes in git."""

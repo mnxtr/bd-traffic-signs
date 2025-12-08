@@ -1,4 +1,118 @@
 {
-  "timestamp": "2025-12-01T07:30:39.974595",
-  "operations": []
+  "timestamp": "2025-12-09T00:17:56.377582",
+  "operations": [
+    {
+      "type": "move",
+      "source": "RESEARCH_PAPER.html",
+      "destination": "docs/research/RESEARCH_PAPER.html",
+      "timestamp": "2025-12-09T00:17:56.370483"
+    },
+    {
+      "type": "move",
+      "source": "RESEARCH_PAPER.pdf",
+      "destination": "docs/research/RESEARCH_PAPER.pdf",
+      "timestamp": "2025-12-09T00:17:56.370864"
+    },
+    {
+      "type": "move",
+      "source": "PREPRINT.md",
+      "destination": "docs/research/PREPRINT.md",
+      "timestamp": "2025-12-09T00:17:56.371236"
+    },
+    {
+      "type": "move",
+      "source": "PREPRINT.html",
+      "destination": "docs/research/PREPRINT.html",
+      "timestamp": "2025-12-09T00:17:56.371606"
+    },
+    {
+      "type": "move",
+      "source": "PREPRINT.pdf",
+      "destination": "docs/research/PREPRINT.pdf",
+      "timestamp": "2025-12-09T00:17:56.371970"
+    },
+    {
+      "type": "move",
+      "source": "PREPRINT_A4.pdf",
+      "destination": "docs/research/PREPRINT_A4.pdf",
+      "timestamp": "2025-12-09T00:17:56.372363"
+    },
+    {
+      "type": "move",
+      "source": "CSE_499B_RESEARCH_PAPER.md",
+      "destination": "docs/research/CSE_499B_RESEARCH_PAPER.md",
+      "timestamp": "2025-12-09T00:17:56.372748"
+    },
+    {
+      "type": "move",
+      "source": "CSE_499B_FINAL_REPORT.pdf",
+      "destination": "docs/research/CSE_499B_FINAL_REPORT.pdf",
+      "timestamp": "2025-12-09T00:17:56.373126"
+    },
+    {
+      "type": "move",
+      "source": "CSE_499B_REPORT.docx",
+      "destination": "docs/research/CSE_499B_REPORT.docx",
+      "timestamp": "2025-12-09T00:17:56.373525"
+    },
+    {
+      "type": "move",
+      "source": "CSE_499B_COMPLETE_SUMMARY.txt",
+      "destination": "docs/research/CSE_499B_COMPLETE_SUMMARY.txt",
+      "timestamp": "2025-12-09T00:17:56.374006"
+    },
+    {
+      "type": "move",
+      "source": "Traffic Signs.pdf",
+      "destination": "docs/research/Traffic_Signs.pdf",
+      "timestamp": "2025-12-09T00:17:56.374528"
+    },
+    {
+      "type": "move",
+      "source": "NEXT_STEPS_GUIDE.md",
+      "destination": "docs/guides/NEXT_STEPS_GUIDE.md",
+      "timestamp": "2025-12-09T00:17:56.375073"
+    },
+    {
+      "type": "move",
+      "source": "README_NEXT_STEPS.md",
+      "destination": "docs/guides/README_NEXT_STEPS.md",
+      "timestamp": "2025-12-09T00:17:56.375506"
+    },
+    {
+      "type": "move",
+      "source": "CODEBASE_ANALYSIS.md",
+      "destination": "docs/reports/CODEBASE_ANALYSIS.md",
+      "timestamp": "2025-12-09T00:17:56.375875"
+    },
+    {
+      "type": "move",
+      "source": "PAPER_GENERATION_COMPLETE.md",
+      "destination": "docs/reports/PAPER_GENERATION_COMPLETE.md",
+      "timestamp": "2025-12-09T00:17:56.376245"
+    },
+    {
+      "type": "move",
+      "source": "PAPER_READY.md",
+      "destination": "docs/reports/PAPER_READY.md",
+      "timestamp": "2025-12-09T00:17:56.376590"
+    },
+    {
+      "type": "move",
+      "source": "README_old.md",
+      "destination": "docs/archive/README_old.md",
+      "timestamp": "2025-12-09T00:17:56.376998"
+    },
+    {
+      "type": "move",
+      "source": "quick_complete_paper.sh",
+      "destination": "scripts/utils/quick_complete_paper.sh",
+      "timestamp": "2025-12-09T00:17:56.377403"
+    },
+    {
+      "type": "delete",
+      "file": ".~lock.CSE_499B_REPORT.docx#",
+      "timestamp": "2025-12-09T00:17:56.377569"
+    }
+  ]
 }
