@@ -7,7 +7,7 @@
 
 > **A comprehensive comparative study of YOLOv11 and SSD architectures for real-time traffic sign detection in Bangladesh, achieving 99.45% mAP@50 with unprecedented model efficiency.**
 
-[📄 Paper](RESEARCH_PAPER.pdf) | [📊 Dataset](#dataset) | [🚀 Quick Start](#quick-start) | [💻 Demo](#demo) | [📱 Android App](#android-app)
+[📄 Paper](docs/research/RESEARCH_PAPER.pdf) | [📊 Dataset](#dataset) | [🚀 Quick Start](#quick-start) | [💻 Demo](#demo) | [📱 Android App](#android-app)
 
 ---
 
@@ -243,7 +243,7 @@ bd-traffic-signs/
 │   └── yolov11_bd_signs/   # Model weights
 ├── app.py                    # Gradio web demo
 ├── requirements.txt          # Dependencies
-├── RESEARCH_PAPER.pdf        # Full paper (30 pages)
+├── docs/research/            # Research papers and reports
 └── README.md                 # This file
 ```
 
@@ -264,8 +264,8 @@ bd-traffic-signs/
 
 ## 📄 Publications
 
-- **Research Paper**: [RESEARCH_PAPER.pdf](RESEARCH_PAPER.pdf) (30 pages)
-- **Preprint**: [PREPRINT.pdf](PREPRINT.pdf) (27 pages)
+- **Research Paper**: [RESEARCH_PAPER.pdf](docs/research/RESEARCH_PAPER.pdf) (30 pages)
+- **Preprint**: [PREPRINT.pdf](docs/research/PREPRINT.pdf) (27 pages)
 
 ---
 
@@ -324,7 +324,7 @@ We welcome contributions! Areas for help:
 
 ## 📜 License
 
-MIT License - see [LICENSE](LICENSE) file
+MIT License
 
 **Dataset**: CC BY 4.0
 
