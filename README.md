@@ -207,7 +207,7 @@ Production-ready Android application for real-time traffic sign detection.
 
 | Study | Year | Model | mAP@50 | FPS | Size (MB) |
 |-------|------|-------|--------|-----|-----------|
-| **Our Work** | **2024** | **YOLOv11n** | **99.45%** 🥈 | **22.2** | **5.2** 🥇 |
+| **Our Work** | **2025** | **YOLOv11n** | **99.45%** 🥈 | **22.2** | **5.2** 🥇 |
 | Zhang et al. | 2023 | YOLOv8x | 99.3% 🥇 | 40.0 | 280 |
 | Wang et al. | 2023 | YOLOv7 | 98.6% | 35.0 | 75 |
 | Li et al. | 2022 | YOLOv5l | 98.8% | 25.0 | 168 |
