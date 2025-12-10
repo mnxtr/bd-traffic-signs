@@ -2,7 +2,7 @@
 # Copy this file and customize for your dataset
 
 # Dataset root path (absolute or relative to this file)
-path: /home/mnx/bd-traffic-signs/data/processed
+path: ./data/processed
 
 # Train/val/test image directories (relative to 'path')
 train: train/images

@@ -173,6 +173,12 @@ public class MainActivity extends AppCompatActivity {
         cameraPreview.setImageBitmap(bitmap);
         placeholderIcon.setVisibility(View.GONE);
         
+        // Check if detector is available
+        if (detector == null) {
+            Toast.makeText(this, "ডিটেক্টর উপলব্ধ নয়", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
         // Show loading
         loadingProgress.setVisibility(View.VISIBLE);
         

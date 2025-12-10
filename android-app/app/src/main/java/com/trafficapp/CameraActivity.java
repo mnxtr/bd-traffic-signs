@@ -3,13 +3,9 @@ package com.trafficapp;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Size;
-import android.view.Surface;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +18,8 @@ import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.google.common.util.concurrent.ListenableFuture;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -33,12 +31,17 @@ public class CameraActivity extends AppCompatActivity {
     
     private PreviewView previewView;
     private DetectionOverlayView overlayView;
+    private TextView fpsTextView;
     private TrafficSignDetector detector;
     private ExecutorService cameraExecutor;
     private ProcessCameraProvider cameraProvider;
     
     private long lastDetectionTime = 0;
     private boolean isDetecting = false;
+    
+    // FPS tracking
+    private long frameCount = 0;
+    private long lastFpsTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,10 @@ public class CameraActivity extends AppCompatActivity {
         
         previewView = findViewById(R.id.previewView);
         overlayView = findViewById(R.id.overlayView);
+        fpsTextView = findViewById(R.id.fpsTextView);
+        
+        // Back button listener
+        findViewById(R.id.backButton).setOnClickListener(v -> finish());
         
         cameraExecutor = Executors.newSingleThreadExecutor();
         
@@ -152,9 +159,18 @@ public class CameraActivity extends AppCompatActivity {
         // Convert ImageProxy to Bitmap
         Bitmap bitmap = imageProxyToBitmap(image);
         
-        if (bitmap != null) {
+        if (bitmap != null && detector != null) {
             // Run detection
             List<TrafficSignDetector.Detection> detections = detector.detect(bitmap);
+            
+            // Update FPS counter
+            frameCount++;
+            if (currentTime - lastFpsTime >= 1000) {
+                final long fps = frameCount;
+                runOnUiThread(() -> fpsTextView.setText("FPS: " + fps));
+                frameCount = 0;
+                lastFpsTime = currentTime;
+            }
             
             // Update overlay on UI thread
             runOnUiThread(() -> {
@@ -193,22 +209,23 @@ public class CameraActivity extends AppCompatActivity {
                 null
             );
             
-            java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
-            yuvImage.compressToJpeg(
-                new android.graphics.Rect(0, 0, image.getWidth(), image.getHeight()), 
-                100, 
-                out
-            );
+            try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                yuvImage.compressToJpeg(
+                    new android.graphics.Rect(0, 0, image.getWidth(), image.getHeight()), 
+                    100, 
+                    out
+                );
+                
+                byte[] imageBytes = out.toByteArray();
+                Bitmap bitmap = android.graphics.BitmapFactory.decodeByteArray(
+                    imageBytes, 0, imageBytes.length
+                );
+                
+                // Rotate bitmap based on image rotation
+                return rotateBitmap(bitmap, image.getImageInfo().getRotationDegrees());
+            }
             
-            byte[] imageBytes = out.toByteArray();
-            Bitmap bitmap = android.graphics.BitmapFactory.decodeByteArray(
-                imageBytes, 0, imageBytes.length
-            );
-            
-            // Rotate bitmap based on image rotation
-            return rotateBitmap(bitmap, image.getImageInfo().getRotationDegrees());
-            
-        } catch (Exception e) {
+        } catch (IOException e) {
             return null;
         }
     }
@@ -229,6 +246,9 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (overlayView != null) {
+            overlayView.cleanup();
+        }
         if (cameraExecutor != null) {
             cameraExecutor.shutdown();
         }

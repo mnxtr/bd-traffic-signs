@@ -18,6 +18,7 @@ public class TrafficSignDetector {
     private static final String MODEL_FILE = "traffic_signs_yolov11_int8.tflite";
     private static final int INPUT_SIZE = 320;
     private static final int NUM_THREADS = 4;
+    private static final int NUM_CLASSES = 5;
     
     private Interpreter interpreter;
     // Removed GpuDelegate declaration
@@ -66,7 +67,9 @@ public class TrafficSignDetector {
         ByteBuffer inputBuffer = preprocessImage(resizedBitmap);
 
         // Run inference
-        float[][][] output = new float[1][25200][85]; // YOLOv11 output format
+        // YOLOv11 output: [1][num_detections][5 + num_classes] = [1][25200][10]
+        // Format: [cx, cy, w, h, conf, class0, class1, class2, class3, class4]
+        float[][][] output = new float[1][25200][5 + NUM_CLASSES];
         interpreter.run(inputBuffer, output);
 
         // Post-process results
@@ -101,7 +104,7 @@ public class TrafficSignDetector {
             // Get class with highest score
             int classId = 0;
             float maxClassScore = 0;
-            for (int i = 5; i < output.length; i++) {
+            for (int i = 5; i < 5 + NUM_CLASSES; i++) {
                 if (output[i] > maxClassScore) {
                     maxClassScore = output[i];
                     classId = i - 5;
